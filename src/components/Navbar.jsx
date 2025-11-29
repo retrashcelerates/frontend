@@ -34,7 +34,13 @@ const Navbar = () => {
         {["beranda", "tentang", "berita", "program", "harga"].map((item) => (
           <li key={item}>
             <button
-              onClick={() => scrollToSection(item)}
+              onClick={() => {
+                if (item === "harga") {
+                  window.location.href = "/login";
+                } else {
+                  scrollToSection(item);
+                }
+              }}
               className="font-medium hover:text-[#018E48] transition"
             >
               {item === "harga"
