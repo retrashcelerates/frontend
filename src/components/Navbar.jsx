@@ -6,7 +6,10 @@ const Navbar = () => {
   const scrollToSection = (id) => {
     const el = document.getElementById(id);
     if (!el) return;
-    window.scrollTo({ top: el.offsetTop - 80, behavior: "smooth" });
+    window.scrollTo({
+      top: el.offsetTop - 80,
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
@@ -16,19 +19,27 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="navbar py-7 flex items-center justify-between">
+    <div
+      className={`
+        navbar w-full flex items-center justify-between 
+        py-5 px-6 md:px-12
+        bg-gray-100 backdrop-blur-md shadow-sm 
+        fixed top-0 left-0 z-50 transition-all
+        ${active ? "py-3 shadow-md" : "py-5"}
+      `}
+    >
       <h1 className="text-2xl md:text-3xl font-bold text-[#018E48] cursor-pointer">
         ReTrash
       </h1>
 
-      {/* MENU */}
       <ul
-        className={`menu fixed left-1/2 -translate-x-1/2
+        className={`
+          menu fixed left-1/2 -translate-x-1/2
           flex items-center gap-6 px-6 py-3
-          bg-white/40 backdrop-blur-lg rounded-b-2xl shadow
+          bg-white/40 backdrop-blur-lg rounded-b-2xl shadow-md
           transition-all duration-300
           ${active ? "top-0 opacity-100" : "-top-10 opacity-0"}
-          md:static md:translate-x-0 md:bg-transparent md:opacity-100 md:shadow-none
+          md:static md:translate-x-0 md:bg-transparent md:shadow-none md:opacity-100
         `}
       >
         {["beranda", "tentang", "berita", "program", "harga"].map((item) => (
