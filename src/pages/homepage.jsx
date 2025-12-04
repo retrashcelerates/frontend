@@ -22,19 +22,19 @@ function Homepage() {
         {/* Dekor kiri */}
         <img
           src={DataImage.Daun1}
-          className="absolute -bottom-4 left-0 w-[75%] max-w-[550px] pointer-events-none"
+          className="absolute bottom-0 left-0 w-[75%] max-w-[550px] pointer-events-none"
           alt="decor"
         />
 
         {/* Dekor kanan */}
         <img
           src={DataImage.Daun2}
-          className="absolute -bottom-4 right-0 w-[75%] max-w-[550px] pointer-events-none"
+          className="absolute bottom-0 right-0 w-[75%] max-w-[550px] pointer-events-none"
           alt="decor"
         />
 
         {/* Konten Tengah */}
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10 px-6 relative z-[2] top-[-70px]">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10 px-6 relative z-[2] top-[-100px]">
 
           <div data-aos="fade-right">
             <h1 className="text-[30px] sm:text-[38px] lg:text-[44px] font-bold leading-tight mb-4">

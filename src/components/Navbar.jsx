@@ -7,6 +7,8 @@ const Navbar = () => {
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
+  const NAVBAR_HEIGHT = 80; // h-20
+
   const menu = [
     { name: "Beranda", type: "scroll", target: "beranda" },
     { name: "Tentang Kami", type: "scroll", target: "tentang" },
@@ -15,13 +17,21 @@ const Navbar = () => {
     { name: "Daftar Harga", type: "route", path: "/Daftarharga" },
   ];
 
+  // Smooth scroll with navbar offset
   const handleScroll = (id) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    if (!el) return;
+
+    const y = el.offsetTop - NAVBAR_HEIGHT;
+
+    window.scrollTo({
+      top: y,
+      behavior: "smooth",
+    });
   };
 
   const handleNavigateAndScroll = (target) => {
-    setOpen(false); // tutup menu mobile
+    setOpen(false);
 
     if (location.pathname !== "/") {
       navigate("/");
@@ -64,7 +74,7 @@ const Navbar = () => {
                       ? "bg-black text-white shadow-md scale-[1.03]"
                       : "text-gray-700 hover:bg-black hover:text-white hover:shadow-md hover:scale-[1.03]"
                   }
-                  `
+                `
                 }
               >
                 {item.name}
@@ -86,7 +96,7 @@ const Navbar = () => {
 
         </div>
 
-        {/* BURGER ICON (MOBILE) */}
+        {/* BURGER ICON */}
         <button
           className="md:hidden flex flex-col gap-[5px]"
           onClick={() => setOpen(!open)}
@@ -107,13 +117,12 @@ const Navbar = () => {
             }`}
           ></span>
         </button>
-
       </div>
 
       {/* MOBILE MENU */}
       <div
         className={`
-          md:hidden fixed top-20 left-0 w-full bg-white shadow-lg border-t 
+          md:hidden fixed top-20 left-0 w-full bg-white shadow-lg border-t
           transition-all duration-300 overflow-hidden
           ${open ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"}
         `}
@@ -135,7 +144,7 @@ const Navbar = () => {
                       ? "bg-black text-white shadow-md"
                       : "text-gray-700 hover:bg-black hover:text-white hover:shadow-md"
                   }
-                  `
+                `
                 }
               >
                 {item.name}
