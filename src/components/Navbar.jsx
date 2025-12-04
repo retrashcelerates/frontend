@@ -47,7 +47,7 @@ const Navbar = () => {
             <button
               onClick={() => {
                 if (item === "harga") {
-                  window.location.href = "/";
+                  window.location.href = "/daftarharga";
                 } else {
                   scrollToSection(item);
                 }

@@ -6,9 +6,6 @@ import DataImage from "../data";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-import Daun1 from "../../public/assets/daun1.png";
-import Daun2 from "../../public/assets/daun2.png";
-
 function Homepage() {
   const navigate = useNavigate();
 
@@ -25,12 +22,12 @@ function Homepage() {
       >
         {/* Dekorasi */}
         <img
-          src={Daun1}
+          src={DataImage.Daun1}
           className="absolute bottom-0 left-0 w-[45%]"
           alt="decor"
         />
         <img
-          src={Daun2}
+          src={DataImage.Daun2}
           className="absolute bottom-0 right-0 w-[45%]"
           alt="decor"
         />

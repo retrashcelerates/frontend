@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import Homepage from "./pages/homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Daftarharga from "./pages/Daftarharga";
 
 function App() {
   return (
@@ -17,6 +18,18 @@ function App() {
             <Navbar />
             <div className="pt-16" />
             <Homepage />
+            <Footer />
+          </>
+        }
+      />
+
+      <Route
+        path="/daftarharga"
+        element={
+          <>
+            <Navbar />
+            <div className="pt-16" />
+            <Daftarharga />
             <Footer />
           </>
         }
