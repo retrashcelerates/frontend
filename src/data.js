@@ -4,7 +4,10 @@ import MapImage from "/assets/map.png";
 import Daun1 from "/assets/daun1.png";
 import Daun2 from "/assets/daun2.png";
 import LoginImage from "/assets/login.png";
+<<<<<<< HEAD
 import Logoimage from "/assets/Logo.png";
+=======
+>>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
 
 const DataImage = {
   HeroImage,
@@ -13,7 +16,10 @@ const DataImage = {
   Daun1,
   Daun2,
   LoginImage,
+<<<<<<< HEAD
   Logoimage,
+=======
+>>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
 };
 
 export default DataImage;
