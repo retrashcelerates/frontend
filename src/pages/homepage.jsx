@@ -3,10 +3,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 import DataImage from "../data";
-<<<<<<< HEAD
-=======
-import Footer from "../components/Footer";
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
 import { useNavigate } from "react-router-dom";
 
 function Homepage() {
@@ -21,39 +17,24 @@ function Homepage() {
       {/* HERO SECTION */}
       <section
         id="beranda"
-<<<<<<< HEAD
-        className="relative h-screen min-h-[650px] overflow-hidden bg-white flex items-center pt-20"
+        className="relative h-screen min-h-[650px] overflow-hidden bg-white flex items-center pt-14"
       >
         {/* Dekor kiri */}
         <img
           src={DataImage.Daun1}
-          className="absolute bottom-0 left-0 w-[70%] max-w-[520px] pointer-events-none"
+          className="absolute -bottom-4 left-0 w-[75%] max-w-[550px] pointer-events-none"
           alt="decor"
         />
 
         {/* Dekor kanan */}
         <img
           src={DataImage.Daun2}
-          className="absolute bottom-0 right-0 w-[70%] max-w-[520px] pointer-events-none"
-=======
-        className="relative pt-24 pb-40 md:pb-75 overflow-hidden bg-white"
-      >
-        {/* Dekorasi */}
-        <img
-          src={DataImage.Daun1}
-          className="absolute bottom-0 left-0 w-[45%]"
-          alt="decor"
-        />
-        <img
-          src={DataImage.Daun2}
-          className="absolute bottom-0 right-0 w-[45%]"
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
+          className="absolute -bottom-4 right-0 w-[75%] max-w-[550px] pointer-events-none"
           alt="decor"
         />
 
         {/* Konten Tengah */}
-<<<<<<< HEAD
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10 px-4 sm:px-6 lg:px-8 relative z-[2] mt-[-160px]">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10 px-6 relative z-[2] top-[-70px]">
 
           <div data-aos="fade-right">
             <h1 className="text-[30px] sm:text-[38px] lg:text-[44px] font-bold leading-tight mb-4">
@@ -62,23 +43,11 @@ function Homepage() {
             </h1>
 
             <p className="text-gray-700 mb-6 text-sm sm:text-base max-w-md">
-=======
-        <div className="max-w-7xl mx-auto flex flex-col-reverse md:grid md:grid-cols-2 items-center gap-10 px-4 sm:px-6 lg:px-8 relative z-[2]">
-          <div data-aos="fade-right">
-            <h1 className="text-[32px] sm:text-[40px] lg:text-[46px] font-bold leading-tight mb-4">
-              Ayo <span className="text-[#60BE75]">Hijaukan</span> dan <br />
-              Hidupkan Dunia!
-            </h1>
-            <p className="text-gray-700 mb-6 text-sm sm:text-base">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
               Dengan ReTrash, setiap botol dan bungkus punya nilai. Setorkan
               sampahmu, kumpulkan poin, dan tukarkan saldo digital langsung di
               akunmu.
             </p>
-<<<<<<< HEAD
 
-=======
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
             <button
               onClick={() => navigate("/login")}
               className="bg-[#222] text-white py-3 px-7 rounded-xl font-semibold hover:bg-[#018E48] transition"
@@ -90,7 +59,6 @@ function Homepage() {
           <div className="flex justify-center" data-aos="fade-left">
             <img
               src={DataImage.HeroImage}
-<<<<<<< HEAD
               className="w-[260px] sm:w-[340px] md:w-[420px] lg:w-[480px] max-w-full"
               alt="Hero"
             />
@@ -99,44 +67,22 @@ function Homepage() {
         </div>
       </section>
 
-
       {/* SECTION FITUR */}
       <section id="program" className="py-20">
         <div
-          className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-=======
-              className="w-[280px] sm:w-[380px] md:w-[480px]"
-              alt="Hero"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION FITUR */}
-      <section id="program" className="py-20">
-        <div
-          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
+          className="max-w-6xl mx-auto px-6 text-center"
           data-aos="fade-up"
         >
           <div className="text-sm inline-block px-5 py-1 border border-[#018E48] text-[#018E48] rounded-full mb-6">
             Fitur Utama
           </div>
 
-<<<<<<< HEAD
           <h2 className="text-[26px] sm:text-[32px] lg:text-[38px] font-semibold leading-snug">
-=======
-          <h2 className="text-[28px] sm:text-[34px] lg:text-[40px] font-semibold leading-snug">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
             Fitur Lengkap untuk <br />
             <span className="text-[#60BE75]">Pengelolaan Sampah</span>
           </h2>
 
-<<<<<<< HEAD
           <p className="text-gray-500 max-w-xl mx-auto mt-4 mb-12 text-sm sm:text-base">
-=======
-          <p className="text-gray-500 max-w-xl mx-auto mt-4 mb-12 text-sm">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
             Akses semua layanan kami dalam satu platform terpadu.
           </p>
 
@@ -178,13 +124,8 @@ function Homepage() {
                   {card.icon}
                 </div>
 
-<<<<<<< HEAD
                 <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
                 <p className="text-gray-600 text-sm mb-4">{card.desc}</p>
-=======
-                <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
-                <p className="text-gray-600 mb-4">{card.desc}</p>
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
                 <button className="text-sm font-semibold hover:underline">
                   Lihat detail
                 </button>
@@ -196,8 +137,8 @@ function Homepage() {
 
       {/* SECTION TENTANG */}
       <section id="tentang" className="py-24 bg-[#F8F9FB]">
-<<<<<<< HEAD
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center px-6">
+          
           <div className="relative" data-aos="fade-right">
             <img
               src={DataImage.TentangImage}
@@ -206,20 +147,6 @@ function Homepage() {
             />
 
             <div className="absolute bottom-5 left-5 bg-white shadow-lg p-4 rounded-xl max-w-[220px]">
-=======
-        <div
-          className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center px-4"
-          data-aos="fade-up"
-        >
-          <div data-aos="fade-right">
-            <img
-              src={DataImage.TentangImage}
-              className="rounded-2xl w-full object-cover"
-              alt=""
-            />
-
-            <div className="absolute bottom-6 left-6 bg-white shadow-lg p-4 rounded-xl max-w-[250px]">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
               <p className="text-sm font-semibold">Rakadira Pangestu</p>
               <p className="text-xs text-gray-500">Project Manager</p>
             </div>
@@ -230,30 +157,11 @@ function Homepage() {
               Tentang Kami
             </div>
 
-<<<<<<< HEAD
             <h2 className="text-3xl font-bold mb-6 leading-snug max-w-md">
-=======
-            <h2 className="text-3xl font-bold mb-6 leading-snug">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
               Berawal dari Ide, <br /> Menjadi Aksi Nyata
             </h2>
 
             <div className="space-y-4">
-<<<<<<< HEAD
-              {["Apa Itu ReTrash?", "Cara Tukar Sampah Jadi Saldo?", "Apa Manfaat ReTrash?"].map(
-                (title, i) => (
-                  <div
-                    key={i}
-                    className="p-4 bg-white rounded-xl shadow"
-                    data-aos="fade-up"
-                    data-aos-delay={i * 150}
-                  >
-                    <h4 className="font-semibold mb-1">{title}</h4>
-                    <p className="text-sm text-gray-600">Keterangan informasi.</p>
-                  </div>
-                )
-              )}
-=======
               {[
                 "Apa Itu ReTrash?",
                 "Cara Tukar Sampah Jadi Saldo?",
@@ -269,43 +177,31 @@ function Homepage() {
                   <p className="text-sm text-gray-600">Keterangan informasi.</p>
                 </div>
               ))}
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
             </div>
           </div>
+
         </div>
       </section>
 
       {/* SECTION MAP */}
       <section className="py-24">
-<<<<<<< HEAD
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
+        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+
           <h2 className="text-[26px] sm:text-[32px] lg:text-[38px] font-semibold leading-snug">
-=======
-        <div className="max-w-7xl mx-auto px-4 text-center" data-aos="fade-up">
-          <h2 className="text-[28px] sm:text-[34px] lg:text-[40px] font-semibold leading-snug">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
             Peta Titik Setor <br />
             <span className="text-[#60BE75]">Bank Sampah</span>
           </h2>
 
-<<<<<<< HEAD
           <p className="text-gray-600 mt-4 mb-8 text-sm sm:text-base max-w-md mx-auto">
-=======
-          <p className="text-gray-600 mt-4 mb-8 text-sm">
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
             "Jangkauan bank sampah luas, menjadikan sampah lebih bernilai."
           </p>
 
           <img
             src={DataImage.MapImage}
-<<<<<<< HEAD
             className="w-full max-w-3xl mx-auto rounded-xl"
             alt="Map"
-=======
-            className="w-full max-w-4xl mx-auto rounded-xl"
-            alt=""
->>>>>>> c8eaf9926f95cd8682aad06643af9af0300f2567
           />
+
         </div>
       </section>
     </>
