@@ -5,6 +5,7 @@ import Daun1 from "/assets/daun1.png";
 import Daun2 from "/assets/daun2.png";
 import LoginImage from "/assets/login.png";
 import Logoimage from "/assets/Logo.png";
+import setorImage from "/assets/setor.jpeg";
 
 const DataImage = {
   HeroImage,
@@ -14,6 +15,7 @@ const DataImage = {
   Daun2,
   LoginImage,
   Logoimage,
+  setorImage,
 };
 
 export default DataImage;

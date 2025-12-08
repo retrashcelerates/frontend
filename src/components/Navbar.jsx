@@ -96,7 +96,6 @@ const Navbar = () => {
 
         </div>
 
-        {/* BURGER ICON */}
         <button
           className="md:hidden flex flex-col gap-[5px]"
           onClick={() => setOpen(!open)}
