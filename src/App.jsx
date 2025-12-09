@@ -7,14 +7,9 @@ import Navbarprofil from "./components/Navbarprofile";
 import Homepage from "./pages/homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Berita from "./pages/berita";
+import DetailBerita from "./pages/Detailberita";
 import Daftarharga from "./pages/Daftarharga";
-import Setor from "./pages/Setor";
-import Setorform from "./pages/Setorform";
-import Profile from "./pages/profile";
-
-/* ✅ ADMIN */
-import BerandaAdmin from "./pages/Admin/beranda";
-import DaftarHargaAdmin from "./pages/Admin/daftarharga";
 
 function App() {
   return (
@@ -27,19 +22,6 @@ function App() {
             <Navbar />
             <div className="pt-16" />
             <Homepage />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/setor"
-        element={
-          <>
-            <Navbar />
-            <div className="pt-20" />
-            <Setor />
-            <div className="pt-20" />
             <Footer />
           </>
         }
@@ -59,57 +41,6 @@ function App() {
 
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-
-      {/* ================= USER (SUDAH LOGIN) ================= */}
-      <Route
-        path="/dashboard"
-        element={
-          <>
-            <Navbarprofil />
-            <div className="pt-16" />
-            <Homepage />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/setorform"
-        element={
-          <>
-            <Navbarprofil />
-            <div className="pt-20" />
-            <Setorform />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/daftarhargalogin"
-        element={
-          <>
-            <Navbarprofil />
-            <div className="pt-20" />
-            <Daftarharga />
-            <Footer />
-          </>
-        }
-      />
-
-      <Route
-        path="/profile"
-        element={
-          <>
-            <Profile />
-            <Footer />
-          </>
-        }
-      />
-
-      {/* ================= ADMIN ================= */}
-      <Route path="/admin/beranda" element={<BerandaAdmin />} />
-      <Route path="/admin/daftarharga" element={<DaftarHargaAdmin />} />
     </Routes>
   );
 }

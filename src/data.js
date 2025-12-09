@@ -6,6 +6,9 @@ import Daun2 from "/assets/daun2.png";
 import LoginImage from "/assets/login.png";
 import Logoimage from "/assets/Logo.png";
 import setorImage from "/assets/setor.jpeg";
+import SearchIcon from "/assets/icon/search.svg";
+import EditIcon from "/assets/icon/edit.svg";
+import DeleteIcon from "/assets/icon/delete.svg";
 
 const DataImage = {
   HeroImage,
@@ -16,6 +19,9 @@ const DataImage = {
   LoginImage,
   Logoimage,
   setorImage,
+  SearchIcon,
+  EditIcon,
+  DeleteIcon,
 };
 
 export default DataImage;
