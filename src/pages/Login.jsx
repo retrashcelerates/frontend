@@ -71,7 +71,7 @@ export default function Login() {
 
         setSuccess("Login berhasil. Mengarahkan ke halaman utama...");
         setTimeout(() => {
-          navigate("/Dashboard"); 
+          navigate("/"); 
         }, 1000);
       }
     } catch (err) {

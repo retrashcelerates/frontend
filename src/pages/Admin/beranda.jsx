@@ -164,11 +164,9 @@ export default function BerandaAdmin() {
             </div>
           </div>
         </div>
+        <br />
+        <Footeradmin />
 
-        {/* FOOTER */}
-        <div className="mt-10">
-          <Footeradmin />
-        </div>
       </div>
     </div>
   );

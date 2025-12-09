@@ -34,7 +34,6 @@ const Daftarharga = () => {
 
   return (
     <>
-      <Navbar />
       <div className="bg-[#F8F9FB] pt-24 pb-32">
         {/* TITLE */}
         <section
@@ -146,8 +145,6 @@ const Daftarharga = () => {
           ))}
         </section>
       </div>
-
-      <Footer />
     </>
   );
 };

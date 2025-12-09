@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaNewspaper,
@@ -12,6 +12,7 @@ import {
 
 export default function Navbaradmin() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   const menu = [
@@ -21,12 +22,17 @@ export default function Navbaradmin() {
     { name: "Daftar User", icon: <FaUsers />, path: "/admin/datauser" },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
   return (
     <>
-      {/* ============ TOP NAV MOBILE (SAMA SEPERTI NAVBAR USER) ============ */}
+      {/* TOP NAV MOBILE */}
       <nav className="lg:hidden fixed top-0 left-0 right-0 bg-white shadow z-50">
         <div className="flex items-center justify-between h-16 px-5">
-          {/* Burger button */}
           <button
             onClick={() => setOpen(true)}
             className="text-2xl text-gray-800 hover:text-green-600 transition"
@@ -39,18 +45,19 @@ export default function Navbaradmin() {
         </div>
       </nav>
 
-      {/* ============ SIDEBAR SLIDE (ADMIN) ============ */}
+      {/* SIDEBAR — tanpa border, pakai shadow saja */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg border-r 
-        transform transition-transform duration-300 z-50
-        ${open ? "translate-x-0" : "-translate-x-full"} 
-        lg:translate-x-0`}
+        className={`
+          fixed top-0 left-0 h-full w-64 bg-white shadow-xl
+          transform transition-transform duration-300 z-50
+          ${open ? "translate-x-0" : "-translate-x-full"} 
+          lg:translate-x-0
+        `}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 h-16 border-b">
+        {/* Header Logo — shadow di bawah */}
+        <div className="flex items-center justify-between px-6 h-16 shadow-sm bg-white">
           <h1 className="text-2xl font-bold text-green-600">Retrash</h1>
 
-          {/* Close button (mobile) */}
           <button
             onClick={() => setOpen(false)}
             className="lg:hidden text-xl text-gray-700 hover:text-green-600 transition"
@@ -82,15 +89,18 @@ export default function Navbaradmin() {
           </ul>
         </nav>
 
-        {/* Logout */}
+        {/* Logout Button */}
         <div className="px-4 absolute bottom-5 w-full">
-          <button className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white w-full py-2.5 rounded-lg transition">
+          <button
+            onClick={handleLogout}
+            className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white w-full py-2.5 rounded-lg transition"
+          >
             <FaSignOutAlt /> Keluar
           </button>
         </div>
       </div>
 
-      {/* Overlay mobile */}
+      {/* MOBILE OVERLAY */}
       {open && (
         <div
           onClick={() => setOpen(false)}

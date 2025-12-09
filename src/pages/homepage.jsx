@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
@@ -7,10 +7,19 @@ import { useNavigate } from "react-router-dom";
 
 function Homepage() {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 900, once: true });
+
+    // cek token di localStorage
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
   }, []);
+
+  const handleDaftarClick = () => {
+    navigate("/login");
+  };
 
   return (
     <>
@@ -35,7 +44,6 @@ function Homepage() {
 
         {/* Konten Tengah */}
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-10 px-6 relative z-[2] top-[-100px]">
-
           <div data-aos="fade-right">
             <h1 className="text-[30px] sm:text-[38px] lg:text-[44px] font-bold leading-tight mb-4">
               Ayo <span className="text-[#60BE75]">Hijaukan</span> dan <br />
@@ -48,12 +56,15 @@ function Homepage() {
               akunmu.
             </p>
 
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-[#222] text-white py-3 px-7 rounded-xl font-semibold hover:bg-[#018E48] transition"
-            >
-              Daftar Sekarang!
-            </button>
+            {/* TOMBOL HANYA MUNCUL SAAT BELUM LOGIN */}
+            {!isLoggedIn && (
+              <button
+                onClick={handleDaftarClick}
+                className="bg-[#222] text-white py-3 px-7 rounded-xl font-semibold hover:bg-[#018E48] transition"
+              >
+                Daftar Sekarang!
+              </button>
+            )}
           </div>
 
           <div className="flex justify-center" data-aos="fade-left">
@@ -63,7 +74,6 @@ function Homepage() {
               alt="Hero"
             />
           </div>
-
         </div>
       </section>
 
@@ -138,7 +148,6 @@ function Homepage() {
       {/* SECTION TENTANG */}
       <section id="tentang" className="py-24 bg-[#F8F9FB]">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center px-6">
-          
           <div className="relative" data-aos="fade-right">
             <img
               src={DataImage.TentangImage}
@@ -179,14 +188,12 @@ function Homepage() {
               ))}
             </div>
           </div>
-
         </div>
       </section>
 
       {/* SECTION MAP */}
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
-
           <h2 className="text-[26px] sm:text-[32px] lg:text-[38px] font-semibold leading-snug">
             Peta Titik Setor <br />
             <span className="text-[#60BE75]">Bank Sampah</span>
@@ -201,7 +208,6 @@ function Homepage() {
             className="w-full max-w-3xl mx-auto rounded-xl"
             alt="Map"
           />
-
         </div>
       </section>
     </>

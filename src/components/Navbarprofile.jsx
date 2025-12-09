@@ -25,11 +25,11 @@ const Navbar = () => {
   const NAVBAR_HEIGHT = 80;
 
   const menu = [
-    { name: "Beranda", type: "route", path: "/Dashboard" },
+    { name: "Beranda", type: "route", path: "/" },
     { name: "Tentang Kami", type: "scroll", target: "tentang" },
     { name: "Berita", type: "route", path: "/berita" },
     { name: "Program", type: "route", path: "/Setorform" },
-    { name: "Daftar Harga", type: "route", path: "/DaftarhargaLogin" },
+    { name: "Daftar Harga", type: "route", path: "/daftarharga" },
   ];
 
   const handleScroll = (id) => {
