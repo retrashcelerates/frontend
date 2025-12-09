@@ -12,7 +12,7 @@ const Navbar = () => {
   const menu = [
     { name: "Beranda", type: "scroll", target: "beranda" },
     { name: "Tentang Kami", type: "scroll", target: "tentang" },
-    { name: "Berita", type: "route", path: "/berita" },
+    { name: "Berita", type: "route", path: "/Berita" },
     { name: "Program", type: "route", path: "/Setor" },
     { name: "Daftar Harga", type: "route", path: "/Daftarharga" },
   ];
