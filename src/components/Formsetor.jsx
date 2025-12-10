@@ -41,6 +41,22 @@ export default function FromSetor() {
   const [photoFile, setPhotoFile] = useState(null);
   const [extraNote, setExtraNote] = useState("");
 
+  // === STATE MODAL SUKSES ===
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
+  const [successInfo, setSuccessInfo] = useState(null);
+
+  // 🔔 AUTO-CLEAR PESAN VALIDASI (ERRORS) SETELAH 30 DETIK
+  useEffect(() => {
+    if (errors.length === 0) return;
+
+    const timer = setTimeout(() => {
+      setErrors([]);
+    }, 30000); // 30000ms = 30 detik
+
+    // bersihin timer kalau errors berubah sebelum 30 detik
+    return () => clearTimeout(timer);
+  }, [errors]);
+
   // Helper format rupiah
   const formatRupiah = (angka) => {
     if (angka == null || isNaN(angka)) return "Rp 0";
@@ -51,7 +67,7 @@ export default function FromSetor() {
     }).format(angka);
   };
 
-  // Helper format tanggal
+  // Helper format tanggal (dd/mm/yy)
   const formatTanggal = (isoString) => {
     if (!isoString) return "-";
     const d = new Date(isoString);
@@ -60,6 +76,20 @@ export default function FromSetor() {
     const mm = String(d.getMonth() + 1).padStart(2, "0");
     const yy = d.getFullYear();
     return `${dd}/${mm}/${yy}`;
+  };
+
+  // Helper format tanggal + jam
+  const formatTanggalWaktu = (isoString) => {
+    if (!isoString) return "-";
+    const d = new Date(isoString);
+    if (isNaN(d.getTime())) return "-";
+    return d.toLocaleString("id-ID", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   // === FETCH PRODUK & LOKASI ===
@@ -324,25 +354,8 @@ export default function FromSetor() {
         if (data.message && !msgs.includes(data.message))
           msgs.push(data.message);
 
-        setErrors(
-          msgs.length ? msgs : ["Gagal membuat transaksi setor."]
-        );
+        setErrors(msgs.length ? msgs : ["Gagal membuat transaksi setor."]);
       } else {
-        setSuccess("Transaksi setor berhasil dibuat.");
-        setIsConfirmOpen(false);
-
-        setForm({
-          namaPenyetor: "",
-          product_id: "",
-          lokasi_id: "",
-          kuantitas: "",
-          hargaPerKg: "",
-        });
-        setPickupDate("");
-        setPickupTime("");
-        setPhotoFile(null);
-        setExtraNote("");
-
         const baru = data.data;
         const qtyBaru = Number(baru.kuantitas || 0);
         const hargaBaru = Number(baru.harga_saat_transaksi || 0);
@@ -351,6 +364,7 @@ export default function FromSetor() {
             ? Number(baru.total_harga)
             : qtyBaru * hargaBaru;
 
+        // update list & saldo
         setTransactions((prev) => [
           {
             id: baru.id,
@@ -362,8 +376,38 @@ export default function FromSetor() {
           },
           ...prev,
         ]);
-
         setTotalSaldoSetor((prev) => prev + totalBaru);
+
+        // info untuk modal sukses
+        const kodeTransaksi =
+          baru.kode_transaksi ||
+          `TR-SAMPAH-${String(baru.id).padStart(6, "0")}`;
+
+        setSuccessInfo({
+          kode: kodeTransaksi,
+          total: totalBaru,
+          jenis: selectedProduk?.nama_produk || baru.nama_produk || "Sampah",
+          berat: qtyBaru,
+          jadwalSetor: tanggalSetorISO || baru.tanggal_setor,
+          catatan: extraNote || "-",
+          waktuPengajuan: baru.created_at || new Date().toISOString(),
+          lokasi: selectedLokasi?.name || "-",
+        });
+        setSuccessModalOpen(true);
+
+        // reset form
+        setIsConfirmOpen(false);
+        setForm({
+          namaPenyetor: "",
+          product_id: "",
+          lokasi_id: "",
+          kuantitas: "",
+          hargaPerKg: "",
+        });
+        setPickupDate("");
+        setPickupTime("");
+        setPhotoFile(null);
+        setExtraNote("");
       }
     } catch (err) {
       console.error(err);
@@ -394,7 +438,6 @@ export default function FromSetor() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">
-          
           {/* ================= FORM SETOR (KIRI) ================= */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-7">
             <div className="flex items-center gap-2 mb-5">
@@ -679,7 +722,7 @@ export default function FromSetor() {
 
             <div className="mb-4 text-sm">
               <label className="block text-gray-600 mb-1">
-                Foto Sampah <span className="text-gray-400">(Opsional)</span>
+                Foto Sampah <span className="text-gray-400"></span>
               </label>
               <label className="w-full flex items-center justify-between border border-dashed border-gray-300 rounded-lg px-3 py-2 cursor-pointer hover:border-green-500">
                 <span className="text-xs text-gray-500">
@@ -731,6 +774,101 @@ export default function FromSetor() {
                   {loadingSubmit ? "Memproses..." : "Konfirmasi Transaksi"}
                 </span>
                 {!loadingSubmit && <span>➜</span>}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= MODAL SUKSES ================= */}
+      {successModalOpen && successInfo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-10">
+          <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden">
+            {/* Header hijau */}
+            <div className="relative bg-green-500 px-6 py-6 text-center text-white">
+              <button
+                onClick={() => setSuccessModalOpen(false)}
+                className="absolute right-4 top-4 text-white/80 hover:text-white"
+              >
+                ✕
+              </button>
+
+              <div className="w-16 h-16 mx-auto rounded-full bg-white flex items-center justify-center mb-3">
+                <span className="text-green-500 text-3xl">✓</span>
+              </div>
+
+              <h2 className="text-lg font-semibold mb-1">
+                Permintaan Setor Berhasil!
+              </h2>
+              <p className="text-xs text-white/90 max-w-xs mx-auto">
+                Jadwal penyetoran sampah Anda telah tercatat.
+                Mohon tunggu verifikasi dari petugas kami.
+              </p>
+            </div>
+
+            {/* Body */}
+            <div className="px-6 pb-6 pt-5 bg-gray-50">
+              {/* Kode transaksi */}
+              <div className="flex justify-center mb-4">
+                <span className="text-[11px] px-4 py-1 rounded-full bg-white border border-green-200 text-green-700 font-medium">
+                  # {successInfo.kode}
+                </span>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-sm space-y-3">
+                <div className="flex justify-between items-center border-b border-gray-100 pb-3">
+                  <span className="text-gray-500">Estimasi Pendapatan</span>
+                  <span className="text-base font-semibold text-green-600">
+                    {formatRupiah(successInfo.total)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Jenis Sampah</span>
+                  <span className="font-medium text-gray-800">
+                    {successInfo.jenis}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Berat</span>
+                  <span className="font-medium text-gray-800">
+                    {successInfo.berat} kg
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Jadwal Setor</span>
+                  <span className="font-medium text-gray-800 text-right">
+                    {formatTanggalWaktu(successInfo.jadwalSetor)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Lokasi</span>
+                  <span className="font-medium text-gray-800 text-right">
+                    {successInfo.lokasi}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="block text-gray-500 mb-1">Catatan</span>
+                  <p className="text-xs text-gray-700">
+                    {successInfo.catatan || "-"}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-gray-100 flex justify-between items-center text-xs text-gray-500">
+                  <span>Waktu Pengajuan</span>
+                  <span>{formatTanggalWaktu(successInfo.waktuPengajuan)}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setSuccessModalOpen(false)}
+                className="mt-5 w-full rounded-full bg-black text-white py-2.5 text-sm font-medium hover:bg-gray-900"
+              >
+                Kembali
               </button>
             </div>
           </div>
