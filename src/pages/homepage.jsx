@@ -50,7 +50,7 @@ function Homepage() {
               Hidupkan Dunia!
             </h1>
 
-            <p className="text-gray-700 mb-6 text-sm sm:text-base max-w-md">
+            <p className="text-[#757575] mb-6 text-[16px] sm:text-[18px] max-w-md">
               Dengan ReTrash, setiap botol dan bungkus punya nilai. Setorkan
               sampahmu, kumpulkan poin, dan tukarkan saldo digital langsung di
               akunmu.
@@ -78,12 +78,11 @@ function Homepage() {
       </section>
 
       {/* SECTION FITUR */}
+
+      {/* SECTION FITUR */}
       <section id="program" className="py-20">
-        <div
-          className="max-w-6xl mx-auto px-6 text-center"
-          data-aos="fade-up"
-        >
-          <div className="text-sm inline-block px-5 py-1 border border-[#018E48] text-[#018E48] rounded-full mb-6">
+        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+          <div className="inline-block px-5 py-1 text-[#018E48] rounded-full mb-6 text-[28px] sm:text-[32px] lg:text-[36px] font-semibold">
             Fitur Utama
           </div>
 
@@ -93,10 +92,11 @@ function Homepage() {
           </h2>
 
           <p className="text-gray-500 max-w-xl mx-auto mt-4 mb-12 text-sm sm:text-base">
-            Akses semua layanan kami dalam satu platform terpadu.
+            Akses semua layanan kami dalam satu platform yang mudah dan
+            terintegrasi.
           </p>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-[69px]">
             {[
               {
                 bg: "#E9F7EF",
@@ -134,9 +134,24 @@ function Homepage() {
                   {card.icon}
                 </div>
 
-                <h3 className="text-lg font-semibold mb-2">{card.title}</h3>
-                <p className="text-gray-600 text-sm mb-4">{card.desc}</p>
-                <button className="text-sm font-semibold hover:underline">
+                <h3 className="text-[20px] sm:text-[22px] lg:text-[24px] font-semibold mb-2">
+                  {card.title}
+                </h3>
+
+                <p className="text-[16px] sm:text-[17px] lg:text-[18px] font-normal text-gray-600 mb-4">
+                  {card.desc}
+                </p>
+
+                <button
+                  onClick={
+                    card.title === "Kategori Sampah"
+                      ? () => navigate("/daftarharga")
+                      : card.title === "Transaksi Sampah"
+                      ? () => navigate("/Setor")
+                      : undefined
+                  }
+                  className="text-[16px] sm:text-[17px] lg:text-[18px] font-medium hover:underline"
+                >
                   Lihat detail
                 </button>
               </div>
@@ -145,68 +160,46 @@ function Homepage() {
         </div>
       </section>
 
-      {/* SECTION TENTANG */}
-      <section id="tentang" className="py-24 bg-[#F8F9FB]">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center px-6">
-          <div className="relative" data-aos="fade-right">
-            <img
-              src={DataImage.TentangImage}
-              className="rounded-2xl w-full object-cover max-h-[450px]"
-              alt=""
-            />
-
-            <div className="absolute bottom-5 left-5 bg-white shadow-lg p-4 rounded-xl max-w-[220px]">
-              <p className="text-sm font-semibold">Rakadira Pangestu</p>
-              <p className="text-xs text-gray-500">Project Manager</p>
-            </div>
-          </div>
-
-          <div data-aos="fade-left">
-            <div className="text-sm inline-block px-4 py-1 border border-[#018E48] text-[#018E48] rounded-full mb-4">
-              Tentang Kami
-            </div>
-
-            <h2 className="text-3xl font-bold mb-6 leading-snug max-w-md">
-              Berawal dari Ide, <br /> Menjadi Aksi Nyata
-            </h2>
-
-            <div className="space-y-4">
-              {[
-                "Apa Itu ReTrash?",
-                "Cara Tukar Sampah Jadi Saldo?",
-                "Apa Manfaat ReTrash?",
-              ].map((title, i) => (
-                <div
-                  key={i}
-                  className="p-4 bg-white rounded-xl shadow"
-                  data-aos="fade-up"
-                  data-aos-delay={i * 150}
-                >
-                  <h4 className="font-semibold mb-1">{title}</h4>
-                  <p className="text-sm text-gray-600">Keterangan informasi.</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* SECTION MAP */}
-      <section className="py-24">
+      <section className="py-10">
         <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
-          <h2 className="text-[26px] sm:text-[32px] lg:text-[38px] font-semibold leading-snug">
+          <h2 className="text-[26px] sm:text-[32px] lg:text-[40px] font-semibold leading-snug">
             Peta Titik Setor <br />
             <span className="text-[#60BE75]">Bank Sampah</span>
           </h2>
 
-          <p className="text-gray-600 mt-4 mb-8 text-sm sm:text-base max-w-md mx-auto">
+          <p className="text-gray-600 mt-4 mb-4 text-[16px] sm:text-[18px] font-medium text-center sm:whitespace-nowrap">
             "Jangkauan bank sampah luas, menjadikan sampah lebih bernilai."
           </p>
 
+          <p className="text-[#60BE75] text-[16px] sm:text-[18px] font-medium text-center mb-4">
+            Surabaya, Jawa Timur, Indonesia
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-[16px] sm:text-[18px] text-gray-700">
+            {/* Telepon 1 */}
+            <div className="flex items-center gap-2">
+              <i className="fa-solid fa-phone text-[#60BE75]"></i>
+              <span>(123) 456-78-90</span>
+            </div>
+
+            {/* Telepon 2 */}
+            <div className="flex items-center gap-2">
+              <i className="fa-solid fa-phone text-[#60BE75]"></i>
+              <span>(123) 456-78-90</span>
+            </div>
+
+            {/* Email */}
+            <div className="flex items-center gap-2">
+              <i className="fa-solid fa-envelope text-[#60BE75]"></i>
+              <span>Retrash@website.com</span>
+            </div>
+          </div>
+
           <img
             src={DataImage.MapImage}
-            className="w-full max-w-3xl mx-auto rounded-xl"
             alt="Map"
+            className="mx-auto rounded-xl w-full max-w-[1131.7px] h-auto object-cover mt-4 mb-"
           />
         </div>
       </section>

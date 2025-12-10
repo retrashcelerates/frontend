@@ -65,10 +65,8 @@ const AdminBerita = () => {
         <AdminNavbar />
 
         <div className="p-6">
-
           {/* Header Search + Tambah Berita */}
           <div className="flex justify-between items-center mb-6">
-
             {/* SEARCH */}
             <div className="relative">
               <img
@@ -100,10 +98,18 @@ const AdminBerita = () => {
             <table className="w-full">
               <thead className="bg-[#D8D8D8] text-black text-sm border-b">
                 <tr className="h-14">
-                  <th className="px-10 text-left w-[45%] font-semibold">Judul</th>
-                  <th className="px-10 text-center w-[20%] font-semibold">Tanggal Publikasi</th>
-                  <th className="px-10 text-center w-[20%] font-semibold">Status</th>
-                  <th className="px-10 text-center w-[15%] font-semibold">Aksi</th>
+                  <th className="px-10 text-left w-[45%] font-semibold">
+                    Judul
+                  </th>
+                  <th className="px-10 text-center w-[20%] font-semibold">
+                    Tanggal Publikasi
+                  </th>
+                  <th className="px-10 text-center w-[20%] font-semibold">
+                    Status
+                  </th>
+                  <th className="px-10 text-center w-[15%] font-semibold">
+                    Aksi
+                  </th>
                 </tr>
               </thead>
 
@@ -117,7 +123,6 @@ const AdminBerita = () => {
                 ) : filtered.length > 0 ? (
                   filtered.map((item) => (
                     <tr key={item.id} className="border-t hover:bg-gray-50">
-
                       {/* Judul + Gambar */}
                       <td className="p-3 flex gap-3 items-center">
                         <img
@@ -153,7 +158,6 @@ const AdminBerita = () => {
                       {/* ACTION BUTTONS */}
                       <td className="py-2 w-[120px]">
                         <div className="flex items-center justify-center gap-4">
-
                           {/* EDIT */}
                           <button
                             onClick={() => {
@@ -183,10 +187,8 @@ const AdminBerita = () => {
                               className="w-5 h-5"
                             />
                           </button>
-
                         </div>
                       </td>
-
                     </tr>
                   ))
                 ) : (

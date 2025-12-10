@@ -42,9 +42,7 @@ export default function DataUser() {
         const json = await res.json();
 
         if (!res.ok) {
-          setErrorMsg(
-            json?.message || "Gagal memuat daftar user dari server."
-          );
+          setErrorMsg(json?.message || "Gagal memuat daftar user dari server.");
           setLoading(false);
           return;
         }
