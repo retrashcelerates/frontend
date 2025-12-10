@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import FormPenarikan from "../components/FormPenarikan";
 import { FiCamera } from "react-icons/fi";
-import Footer from "../components/Footer";
+import { MdArrowBackIosNew } from "react-icons/md"; 
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -444,16 +444,17 @@ export default function ProfilePage() {
         <div className="max-w-6xl mx-auto flex items-center gap-4 px-4 sm:px-0 py-3">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center text-gray-600 text-sm hover:text-gray-800"
+            className="flex items-center gap-2 text-gray-600 text-sm hover:text-gray-800"
           >
-            <span className="text-lg mr-1">←</span> Kembali
+            <MdArrowBackIosNew className="text-lg" />
+            <span>Kembali</span>
           </button>
 
           <div className="w-px h-5 bg-gray-300"></div>
 
           <div className="flex flex-col flex-1">
             <h1 className="text-lg sm:text-xl font-semibold text-gray-800">
-              Profile Saya
+              Profil Saya
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 -mt-0.5">
               Kelola informasi profil Anda

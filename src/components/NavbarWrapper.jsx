@@ -1,4 +1,5 @@
 // src/components/NavbarWrapper.jsx
+import { useLocation } from "react-router-dom";   // <-- WAJIB ADA
 import Navbar from "./Navbar";
 import Navbarprofile from "./Navbarprofile";
 
@@ -6,9 +7,9 @@ const NavbarWrapper = () => {
   const location = useLocation();
 
   // halaman yang TIDAK pakai navbar user/navbar profile
-  const hideNavbarRoutes = ["/login", "/register", "/profile", ];
+  const hideNavbarRoutes = ["/login", "/register", "/profile"];
 
-  // ❌ SEMUA route admin tidak pakai NavbarWrapper
+  // SEMUA route admin tidak pakai NavbarWrapper
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   if (hideNavbarRoutes.includes(location.pathname) || isAdminRoute) {

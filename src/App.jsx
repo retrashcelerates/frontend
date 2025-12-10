@@ -2,10 +2,10 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import NavbarWrapper from "./components/NavbarWrapper";
-import Footer from "./components/Footer";
-import ScrollToTop from "./components/ScrollToTop";
 import FooterWrapper from "./components/FooterWrapper";
+import ScrollToTop from "./components/ScrollToTop";
 
+// USER PAGES
 import Homepage from "./pages/homepage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,30 +24,16 @@ import BeritaAdmin from "./pages/Admin/berita";
 import DaftarHargaAdmin from "./pages/Admin/daftarharga";
 import LokasiAdmin from "./pages/Admin/datalokasi";
 import DataUser from "./pages/Admin/datauser";
-import AdminBerita from "./pages/Admin/berita";
 
 function App() {
   const location = useLocation();
 
-  // Navbar hilang di admin & detail berita
-  const hideNavbar =
-    location.pathname.startsWith("/admin") ||
-    location.pathname.startsWith("/berita/");
-
-  // Footer hilang hanya di admin
-  const hideFooter = location.pathname.startsWith("/admin");
-
-  return (
-    <>
-      {/* NAVBAR */}
-      {!hideNavbar && <NavbarWrapper />}
-      {!hideNavbar && <div className="pt-20" />}
   // ✅ halaman TANPA navbar & footer
   const hideLayoutRoutes = [
     "/login",
     "/register",
     "/profile",
-    "/lokasi",      // pakai lowercase, sesuai route
+    "/lokasi", // pakai lowercase, sesuai route
   ];
 
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -60,11 +46,10 @@ function App() {
 
   return (
     <>
-      {/* NAVBAR USER / GUEST (bukan untuk admin) */}
-      {!isAdminRoute && <NavbarWrapper />}
-      {!isAdminRoute && <div className="pt-20" />}
+      {/* supaya setiap pindah route auto scroll ke atas */}
       <ScrollToTop />
-      {/* ✅ NAVBAR cuma muncul jika bukan halaman yang disembunyikan */}
+
+      {/* NAVBAR cuma muncul kalau bukan halaman yang disembunyikan */}
       {!hideLayout && <NavbarWrapper />}
 
       <Routes>
@@ -89,12 +74,9 @@ function App() {
         <Route path="/admin/daftarharga" element={<DaftarHargaAdmin />} />
         <Route path="/admin/datalokasi" element={<LokasiAdmin />} />
         <Route path="/admin/datauser" element={<DataUser />} />
-        <Route path="/admin/berita" element={<AdminBerita />} />
       </Routes>
 
-      {/* FOOTER */}
-      {!hideFooter && <Footer />}
-      {/* ✅ FOOTER juga ikut aturan yang sama */}
+      {/* FOOTER juga ikut aturan hideLayout */}
       {!hideLayout && <FooterWrapper />}
     </>
   );

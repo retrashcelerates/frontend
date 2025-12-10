@@ -443,7 +443,7 @@ export default function FromSetor() {
             <div className="flex items-center gap-2 mb-5">
               <span className="text-green-500 text-xl font-bold">+</span>
               <h2 className="font-semibold text-gray-800">
-                Tambah Transaksi Baru
+                Setor Sampah
               </h2>
             </div>
 
@@ -556,7 +556,7 @@ export default function FromSetor() {
                 className="mt-3 w-full flex items-center justify-center gap-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-2.5 transition"
               >
                 <span>+</span>
-                <span>Tambah Transaksi</span>
+                <span>Konfirmasi Transaksi</span>
               </button>
             </form>
           </div>

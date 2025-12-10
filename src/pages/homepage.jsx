@@ -1,3 +1,4 @@
+// src/pages/homepage.jsx
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -20,6 +21,41 @@ function Homepage() {
   const handleDaftarClick = () => {
     navigate("/login");
   };
+
+  // === DATA KARTU FITUR (dengan onClick masing-masing) ===
+  const featureCards = [
+    {
+      bg: "#E9F7EF",
+      iconbg: "#D1F2E1",
+      icon: "♻️",
+      title: "Transaksi Sampah",
+      desc: "Tukar jenis sampah dengan saldo digital.",
+      onClick: () => {
+        // kalau login ke setorform, kalau belum ke setor
+        if (isLoggedIn) {
+          navigate("/setorform");
+        } else {
+          navigate("/setor");
+        }
+      },
+    },
+    {
+      bg: "#FFF7E6",
+      iconbg: "#FFE7B8",
+      icon: "📍",
+      title: "Titik Setor",
+      desc: "Lihat lokasi titik setor terdekat & jadwalnya.",
+      onClick: () => navigate("/lokasi"),
+    },
+    {
+      bg: "#EEF5FF",
+      iconbg: "#D6E4FF",
+      icon: "🗂️",
+      title: "Kategori Sampah",
+      desc: "Pelajari kategori & harga setiap material.",
+      onClick: () => navigate("/daftarharga"),
+    },
+  ];
 
   return (
     <>
@@ -78,10 +114,11 @@ function Homepage() {
       </section>
 
       {/* SECTION FITUR */}
-
-      {/* SECTION FITUR */}
       <section id="program" className="py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+        <div
+          className="max-w-6xl mx-auto px-6 text-center"
+          data-aos="fade-up"
+        >
           <div className="inline-block px-5 py-1 text-[#018E48] rounded-full mb-6 text-[28px] sm:text-[32px] lg:text-[36px] font-semibold">
             Fitur Utama
           </div>
@@ -97,31 +134,9 @@ function Homepage() {
           </p>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-[69px]">
-            {[
-              {
-                bg: "#E9F7EF",
-                iconbg: "#D1F2E1",
-                icon: "♻️",
-                title: "Transaksi Sampah",
-                desc: "Tukar jenis sampah dengan saldo digital.",
-              },
-              {
-                bg: "#FFF7E6",
-                iconbg: "#FFE7B8",
-                icon: "📍",
-                title: "Titik Setor",
-                desc: "Lihat lokasi titik setor terdekat & jadwalnya.",
-              },
-              {
-                bg: "#EEF5FF",
-                iconbg: "#D6E4FF",
-                icon: "🗂️",
-                title: "Kategori Sampah",
-                desc: "Pelajari kategori & harga setiap material.",
-              },
-            ].map((card, i) => (
+            {featureCards.map((card, i) => (
               <div
-                key={i}
+                key={card.title}
                 className="rounded-2xl p-6 text-left hover:shadow-lg transition"
                 style={{ background: card.bg }}
                 data-aos="zoom-in"
@@ -143,13 +158,7 @@ function Homepage() {
                 </p>
 
                 <button
-                  onClick={
-                    card.title === "Kategori Sampah"
-                      ? () => navigate("/daftarharga")
-                      : card.title === "Transaksi Sampah"
-                      ? () => navigate("/Setor")
-                      : undefined
-                  }
+                  onClick={card.onClick}
                   className="text-[16px] sm:text-[17px] lg:text-[18px] font-medium hover:underline"
                 >
                   Lihat detail
@@ -162,7 +171,10 @@ function Homepage() {
 
       {/* SECTION MAP */}
       <section className="py-10">
-        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+        <div
+          className="max-w-6xl mx-auto px-6 text-center"
+          data-aos="fade-up"
+        >
           <h2 className="text-[26px] sm:text-[32px] lg:text-[40px] font-semibold leading-snug">
             Peta Titik Setor <br />
             <span className="text-[#60BE75]">Bank Sampah</span>
@@ -179,27 +191,29 @@ function Homepage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-[16px] sm:text-[18px] text-gray-700">
             {/* Telepon 1 */}
             <div className="flex items-center gap-2">
-              <i className="fa-solid fa-phone text-[#60BE75]"></i>
+              <i className="fa-solid fa-phone text-[#60BE75]" />
               <span>(123) 456-78-90</span>
             </div>
 
             {/* Telepon 2 */}
             <div className="flex items-center gap-2">
-              <i className="fa-solid fa-phone text-[#60BE75]"></i>
+              <i className="fa-solid fa-phone text-[#60BE75]" />
               <span>(123) 456-78-90</span>
             </div>
 
             {/* Email */}
             <div className="flex items-center gap-2">
-              <i className="fa-solid fa-envelope text-[#60BE75]"></i>
+              <i className="fa-solid fa-envelope text-[#60BE75]" />
               <span>Retrash@website.com</span>
             </div>
           </div>
 
+          {/* MAP IMAGE – klik menuju /lokasi */}
           <img
             src={DataImage.MapImage}
             alt="Map"
-            className="mx-auto rounded-xl w-full max-w-[1131.7px] h-auto object-cover mt-4 mb-"
+            onClick={() => navigate("/lokasi")}
+            className="mx-auto rounded-xl w-full max-w-[1131.7px] h-auto object-cover mt-4 mb- cursor-pointer"
           />
         </div>
       </section>

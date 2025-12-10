@@ -28,7 +28,7 @@ const Navbar = () => {
     { name: "Beranda", type: "scroll", target: "beranda" },
     { name: "Tentang Kami", type: "route", path: "/tentang" },
     { name: "Berita", type: "route", path: "/Berita" },
-    { name: "Program", type: "route", path: "/Setor" },
+    { name: "Program", type: "route", path: "/Setorform" },
     { name: "Daftar Harga", type: "route", path: "/Daftarharga" },
   ];
 
