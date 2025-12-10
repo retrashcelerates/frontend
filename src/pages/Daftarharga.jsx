@@ -34,14 +34,14 @@ const Daftarharga = () => {
 
   return (
     <>
-      <div className="bg-[#F8F9FB] pt-24 pb-32">
+      <div className="bg-[#F8F9FB] pt-24 pb-5">
         {/* TITLE */}
         <section
           className="text-center max-w-4xl mx-auto px-6"
           data-aos="fade-down"
         >
           <div
-            className="w-14 h-14 flex items-center justify-center bg-[#E9F7EF] text-[#018E48] rounded-full mx-auto mb-4"
+            className="w-14 h-14 flex items-center justify-center bg-[#E9F7EF] text-[#018E48] rounded-full mx-auto mb-4 text-[40px]"
             data-aos="zoom-in"
           >
             ♻️
@@ -85,7 +85,6 @@ const Daftarharga = () => {
               >
                 <div className="flex justify-between mb-3">
                   <h3 className="text-xl font-semibold">{item.nama_produk}</h3>
-                  <span className="text-green-600 text-sm">⬆️ Harga</span>
                 </div>
 
                 <p className="text-sm text-gray-500 mb-2">

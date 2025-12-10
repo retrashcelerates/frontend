@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import FormPenarikan from "../components/FormPenarikan";
 import { FiCamera } from "react-icons/fi";
@@ -122,9 +117,7 @@ export default function ProfilePage() {
       const json = await res.json();
 
       if (!res.ok) {
-        setErrorMsg(
-          json?.error || json?.message || "Gagal mengambil profil"
-        );
+        setErrorMsg(json?.error || json?.message || "Gagal mengambil profil");
         return;
       }
 

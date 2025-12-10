@@ -193,6 +193,10 @@ export default function DataUser() {
         }),
       });
 
+        if (!res.ok) {
+          setErrorMsg(json?.message || "Gagal memuat daftar user dari server.");
+          setLoading(false);
+          return;
       const json = await res.json();
 
       if (!res.ok) {

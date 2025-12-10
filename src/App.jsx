@@ -2,6 +2,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import NavbarWrapper from "./components/NavbarWrapper";
+import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import FooterWrapper from "./components/FooterWrapper";
 
 import Homepage from "./pages/homepage";
@@ -13,12 +15,14 @@ import Setorform from "./pages/Setorform";
 import Profile from "./pages/profile";
 import Berita from "./pages/berita";
 import BeritaDetail from "./pages/Detailberita";
+import Tentang from "./pages/Tentang";
 import Lokasi from "./pages/Lokasi";
 
 /* ✅ ADMIN */
 import BerandaAdmin from "./pages/Admin/beranda";
 import DaftarHargaAdmin from "./pages/Admin/daftarharga";
 import DataUser from "./pages/Admin/datauser";
+import AdminBerita from "./pages/Admin/berita";
 
 function App() {
   const location = useLocation();
@@ -41,6 +45,10 @@ function App() {
 
   return (
     <>
+      {/* NAVBAR USER / GUEST (bukan untuk admin) */}
+      {!isAdminRoute && <NavbarWrapper />}
+      {!isAdminRoute && <div className="pt-20" />}
+      <ScrollToTop />
       {/* ✅ NAVBAR cuma muncul jika bukan halaman yang disembunyikan */}
       {!hideLayout && <NavbarWrapper />}
 
@@ -53,6 +61,7 @@ function App() {
         <Route path="/setor" element={<Setor />} />
         <Route path="/setorform" element={<Setorform />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/tentang" element={<Tentang />} />
         <Route path="/lokasi" element={<Lokasi />} />
 
         {/* AUTH */}
@@ -63,6 +72,7 @@ function App() {
         <Route path="/admin/beranda" element={<BerandaAdmin />} />
         <Route path="/admin/daftarharga" element={<DaftarHargaAdmin />} />
         <Route path="/admin/datauser" element={<DataUser />} />
+        <Route path="/admin/berita" element={<AdminBerita />} />
       </Routes>
 
       {/* ✅ FOOTER juga ikut aturan yang sama */}
