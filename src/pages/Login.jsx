@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DataImage from "../data";
 
-const API_BASE_URL = "https://backend-deployment-topaz.vercel.app/api/auth"; 
+const API_BASE_URL = "https://backend-deployment-topaz.vercel.app/api/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function Login() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState([]);   
+  const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
@@ -58,10 +58,15 @@ export default function Login() {
         if (data.message && !msgs.includes(data.message)) {
           msgs.push(data.message);
         }
-        setErrors(msgs.length ? msgs : ["Login gagal, silakan cek kembali email dan password."]);
+        setErrors(
+          msgs.length
+            ? msgs
+            : ["Login gagal, silakan cek kembali email dan password."]
+        );
       } else {
         const token = data?.data?.token;
         const user = data?.data?.user;
+
         if (token) {
           localStorage.setItem("token", token);
         }
@@ -69,10 +74,20 @@ export default function Login() {
           localStorage.setItem("user", JSON.stringify(user));
         }
 
-        setSuccess("Login berhasil. Mengarahkan ke halaman utama...");
-        setTimeout(() => {
-          navigate("/"); 
-        }, 1000);
+        // 🔥 CEK ROLE DI SINI
+        const role = user?.role;
+
+        if (role === "admin") {
+          setSuccess("Login berhasil sebagai Admin. Mengarahkan ke dashboard...");
+          setTimeout(() => {
+            navigate("/admin/beranda");
+          }, 800);
+        } else {
+          setSuccess("Login berhasil. Mengarahkan ke beranda...");
+          setTimeout(() => {
+            navigate("/");
+          }, 800);
+        }
       }
     } catch (err) {
       console.error(err);
@@ -141,7 +156,11 @@ export default function Login() {
               type="submit"
               disabled={loading}
               className={`w-full bg-black text-white py-2 rounded-lg text-sm font-medium transition 
-                ${loading ? "opacity-70 cursor-not-allowed" : "hover:bg-green-600"}`}
+                ${
+                  loading
+                    ? "opacity-70 cursor-not-allowed"
+                    : "hover:bg-green-600"
+                }`}
             >
               {loading ? "Memproses..." : "Login"}
             </button>

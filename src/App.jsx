@@ -16,6 +16,9 @@ import BeritaDetail from "./pages/Detailberita";
 /* ✅ ADMIN */
 import BerandaAdmin from "./pages/Admin/beranda";
 import DaftarHargaAdmin from "./pages/Admin/daftarharga";
+import DataUser from "./pages/Admin/datauser";
+
+
 
 function App() {
   const location = useLocation();
@@ -44,6 +47,7 @@ function App() {
         {/* ADMIN – di dalam komponen ini kamu bebas pakai Navbaradmin sendiri */}
         <Route path="/admin/beranda" element={<BerandaAdmin />} />
         <Route path="/admin/daftarharga" element={<DaftarHargaAdmin />} />
+        <Route path="/admin/datauser" element={<DataUser />} />
       </Routes>
 
       {/* FOOTER USER (tidak muncul di admin) */}
