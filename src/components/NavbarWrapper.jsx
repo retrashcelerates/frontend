@@ -7,7 +7,7 @@ const NavbarWrapper = () => {
   const location = useLocation();
 
   // halaman yang TIDAK pakai navbar user/navbar profile
-  const hideNavbarRoutes = ["/login", "/register", "/profile"];
+  const hideNavbarRoutes = ["/login", "/register", "/profile", ];
 
   // ❌ SEMUA route admin tidak pakai NavbarWrapper
   const isAdminRoute = location.pathname.startsWith("/admin");

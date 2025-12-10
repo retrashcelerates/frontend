@@ -8,6 +8,7 @@ import {
   FaSignOutAlt,
   FaBars,
   FaTimes,
+  FaMapMarkerAlt
 } from "react-icons/fa";
 
 export default function Navbaradmin() {
@@ -19,6 +20,7 @@ export default function Navbaradmin() {
     { name: "Dashboard", icon: <FaHome />, path: "/admin/beranda" },
     { name: "Berita", icon: <FaNewspaper />, path: "/admin/berita" },
     { name: "Daftar Harga", icon: <FaTags />, path: "/admin/daftarharga" },
+    { name: "Lokasi Setor", icon: <FaMapMarkerAlt />, path: "/admin/datalokasi" },
     { name: "Daftar User", icon: <FaUsers />, path: "/admin/datauser" },
   ];
 
@@ -45,16 +47,14 @@ export default function Navbaradmin() {
         </div>
       </nav>
 
-      {/* SIDEBAR — tanpa border, pakai shadow saja */}
+      {/* SIDEBAR */}
       <div
-        className={`
-          fixed top-0 left-0 h-full w-64 bg-white shadow-xl
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl
           transform transition-transform duration-300 z-50
-          ${open ? "translate-x-0" : "-translate-x-full"} 
-          lg:translate-x-0
-        `}
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          lg:translate-x-0`}
       >
-        {/* Header Logo — shadow di bawah */}
+        {/* Header */}
         <div className="flex items-center justify-between px-6 h-16 shadow-sm bg-white">
           <h1 className="text-2xl font-bold text-green-600">Retrash</h1>
 
@@ -89,7 +89,7 @@ export default function Navbaradmin() {
           </ul>
         </nav>
 
-        {/* Logout Button */}
+        {/* Logout */}
         <div className="px-4 absolute bottom-5 w-full">
           <button
             onClick={handleLogout}
@@ -100,7 +100,7 @@ export default function Navbaradmin() {
         </div>
       </div>
 
-      {/* MOBILE OVERLAY */}
+      {/* Overlay Mobile */}
       {open && (
         <div
           onClick={() => setOpen(false)}

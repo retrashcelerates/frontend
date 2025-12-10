@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const API_URL = "https://backend-deployment-topaz.vercel.app/api/berita";
 
@@ -12,11 +14,19 @@ const BeritaDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Init AOS ketika halaman detail dibuka
+    AOS.init({
+      duration: 900,
+      once: true,
+      easing: "ease-out-cubic",
+    });
+
     axios
       .get(`${API_URL}/${id}`)
       .then((res) => {
         setBerita(res.data.data);
         setLoading(false);
+        setTimeout(() => AOS.refresh(), 100); // refresh animasi setelah data masuk
       })
       .catch((err) => {
         console.error("Error fetching detail:", err);
@@ -43,10 +53,10 @@ const BeritaDetail = () => {
       <div className="w-full max-w-5xl">
 
         {/* WRAPPER TITLE + BACK */}
-        <div className="mb-8 pt-2">
+        <div className="mb-8 pt-2" data-aos="fade-down">
           <div className="flex items-start justify-center relative">
 
-            {/* Tombol Back — kiri */}
+            {/* Tombol Back */}
             <button
               onClick={() => navigate(-1)}
               className="
@@ -55,10 +65,8 @@ const BeritaDetail = () => {
                 max-sm:static max-sm:mb-3
               "
             >
-              {/* Ikon responsif */}
               <span className="text-[26px] max-sm:text-[20px] text-black leading-none">&lt;</span>
 
-              {/* Teks 'Back' responsif */}
               <span className="
                 text-[20px] max-sm:text-[16px]
                 text-green-600 font-semibold
@@ -68,10 +76,9 @@ const BeritaDetail = () => {
               </span>
             </button>
 
-            {/* Spacer kiri */}
             <div className="w-[110px] max-sm:hidden"></div>
 
-            {/* Judul tengah */}
+            {/* Judul */}
             <h1
               className="
                 text-[22px] sm:text-[32px] font-bold leading-snug text-center
@@ -81,13 +88,15 @@ const BeritaDetail = () => {
               {berita.judul}
             </h1>
 
-            {/* Spacer kanan */}
             <div className="w-[110px] max-sm:hidden"></div>
           </div>
         </div>
 
         {/* Card Gambar */}
-        <div className="bg-white shadow-md rounded-2xl p-5 mb-5">
+        <div
+          className="bg-white shadow-md rounded-2xl p-5 mb-5"
+          data-aos="zoom-in"
+        >
           <div className="w-full aspect-[10/4] rounded-xl overflow-hidden">
             <img
               src={berita.image_url}
@@ -105,9 +114,11 @@ const BeritaDetail = () => {
           </p>
         </div>
 
-
         {/* Konten */}
-        <div className="text-gray-700 text-[14px] text-justify leading-[1.45] space-y-3">
+        <div
+          className="text-gray-700 text-[14px] text-justify leading-[1.45] space-y-3"
+          data-aos="fade-up"
+        >
           {berita.konten?.split("\n").map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}

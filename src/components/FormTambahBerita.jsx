@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import DataImage from "../data";
 
 const API_URL = "https://backend-deployment-topaz.vercel.app/api/berita";
 
@@ -13,7 +14,10 @@ const TambahBerita = ({ open, onClose, onSuccess }) => {
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Handle file
+  // Pop-up sukses
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
   const handleFile = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -22,21 +26,8 @@ const TambahBerita = ({ open, onClose, onSuccess }) => {
     }
   };
 
-  const uploadImageToCloud = async () => {
-    const formData = new FormData();
-    formData.append("image", thumbnail);
-
-    const res = await axios.post(
-      "https://backend-deployment-topaz.vercel.app/upload",
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
-
-    return res.data.url;
-  };
-
   const handleSubmit = async (status) => {
-    if (!judul || !tanggal || !konten || !thumbnail) {
+    if (!judul || !konten || !thumbnail) {
       alert("Semua field wajib diisi!");
       return;
     }
@@ -44,20 +35,34 @@ const TambahBerita = ({ open, onClose, onSuccess }) => {
     try {
       setLoading(true);
 
-      const image_url = await uploadImageToCloud();
+      const formData = new FormData();
+      formData.append("judul", judul);
+      formData.append("konten", konten);
+      formData.append("author", "Admin");
+      formData.append("status", status);
+      formData.append("tanggal", tanggal);
+      formData.append("image", thumbnail);
 
-      await axios.post(API_URL, {
-        judul,
-        konten,
-        author: "Admin",
-        status,
-        image_url,
+      await axios.post(API_URL, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
-      onSuccess();
+      // 🟢 Tentukan pesan pop up
+      if (status === "draft") {
+        setSuccessMessage("Berhasil menyimpan draft berita.");
+      } else {
+        setSuccessMessage("Berhasil Mempublish berita.");
+      }
+
+      // Tampilkan pop up sukses
+      setShowSuccess(true);
+
     } catch (error) {
-      console.error(error);
-      alert("Gagal menambahkan berita");
+      console.log("ERROR FULL:", error);
+      alert("Gagal menambahkan berita!");
     } finally {
       setLoading(false);
     }
@@ -66,10 +71,10 @@ const TambahBerita = ({ open, onClose, onSuccess }) => {
   return (
     <div className="fixed inset-0 bg-black/40 z-50 px-4 py-10 overflow-y-auto">
 
-      {/* CARD FORM */}
+      {/* CARD */}
       <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl mx-auto relative">
 
-        {/* Close Button */}
+        {/* Close */}
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-xl text-gray-600 hover:text-black"
@@ -77,102 +82,120 @@ const TambahBerita = ({ open, onClose, onSuccess }) => {
           ✕
         </button>
 
-        {/* Title */}
         <h2 className="text-xl font-semibold mb-6">Tambah Berita</h2>
 
-        {/* FORM INPUT */}
         <div className="space-y-4">
-
-          {/* Judul */}
+          {/* JUDUL */}
           <div>
-            <label className="text-sm text-black font-medium">Judul Berita</label>
+            <label className="text-sm font-medium">Judul Berita</label>
             <input
               type="text"
               value={judul}
               onChange={(e) => setJudul(e.target.value)}
-              className="w-full mt-1 border border-[#857A7A] rounded-lg px-3 py-2"
+              className="w-full mt-1 border border-gray-400 rounded-lg px-3 py-2"
               placeholder="Masukkan judul berita"
             />
           </div>
 
-          {/* Tanggal */}
+          {/* TANGGAL */}
           <div>
-            <label className="text-sm text-black font-medium">Tanggal Publikasi</label>
+            <label className="text-sm font-medium">Tanggal Publikasi</label>
             <input
               type="date"
               value={tanggal}
               onChange={(e) => setTanggal(e.target.value)}
-              className="w-full mt-1 border border-[#857A7A] rounded-lg px-3 py-2"
+              className="w-full mt-1 border border-gray-400 rounded-lg px-3 py-2"
             />
           </div>
 
-          {/* Konten */}
+          {/* KONTEN */}
           <div>
-            <label className="text-sm text-black font-medium">Konten Berita</label>
+            <label className="text-sm font-medium">Konten Berita</label>
             <textarea
+              rows="5"
               value={konten}
               onChange={(e) => setKonten(e.target.value)}
-              rows="5"
-              className="w-full mt-1 border border-[#857A7A] rounded-lg px-3 py-2"
-              placeholder="Tuliskan konten berita di sini..."
+              className="w-full mt-1 border border-gray-400 rounded-lg px-3 py-2"
+              placeholder="Tuliskan konten berita..."
             ></textarea>
           </div>
 
-          {/* Upload Gambar */}
+          {/* THUMBNAIL */}
           <div>
-            <label className="text-sm text-black font-medium">Thumbnail Berita</label>
+            <label className="text-sm font-medium">Thumbnail Berita</label>
 
             <div className="mt-2 border-dashed border-2 border-gray-300 rounded-lg p-6 flex flex-col justify-center items-center cursor-pointer relative">
 
               {preview ? (
-                <img
-                  src={preview}
-                  className="w-full max-h-60 object-cover rounded-lg"
-                  alt="preview"
-                />
+                <img src={preview} className="w-full max-h-60 object-cover rounded-lg" />
               ) : (
                 <>
                   <span className="text-3xl">📤</span>
-                  <p className="text-sm mt-2 text-gray-600">
-                    Seret dan lepas gambar Anda di sini
-                  </p>
+                  <p className="text-sm mt-2 text-gray-600">Seret atau upload gambar</p>
                 </>
               )}
 
               <input
                 type="file"
                 onChange={handleFile}
-                className="w-full h-full opacity-0 absolute cursor-pointer"
+                accept="image/*"
+                className="absolute inset-0 opacity-0 cursor-pointer"
               />
             </div>
           </div>
         </div>
 
-        {/* Footer Button */}
+        {/* BUTTONS */}
         <div className="flex justify-end mt-6 gap-3">
           <button
             onClick={() => handleSubmit("draft")}
-            className="px-4 py-2 bg-[#EE6464] text-white rounded-lg hover:bg-gray-300"
             disabled={loading}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-gray-400"
           >
             Draft
           </button>
 
           <button
-            onClick={() => handleSubmit("terbit")}
-            className="px-4 py-2 bg-[#47CF65] text-white rounded-lg hover:bg-green-600"
+            onClick={() => handleSubmit("published")}
             disabled={loading}
+            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
           >
             {loading ? "Menyimpan..." : "Publish"}
           </button>
         </div>
-
-        {/* Last Saved */}
-        <p className="text-right text-xs text-gray-500 mt-2">
-          Terakhir disimpan: Beberapa detik yang lalu
-        </p>
-
       </div>
+
+      {/* POPUP SUKSES */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center px-4">
+
+          <div className="bg-white w-full max-w-sm rounded-xl shadow-xl p-7 text-center">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <img
+                src={DataImage.CentangIcon}  
+                alt="success"
+                className="w-12 h-12"
+              />
+            </div>
+
+            <h3 className="text-xl font-semibold">Sukses</h3>
+            <p className="text-gray-600 mt-1">{successMessage}</p>
+
+            <button
+              onClick={() => {
+                setShowSuccess(false);
+                onSuccess();
+              }}
+              className="mt-5 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+            >
+              Oke
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 };

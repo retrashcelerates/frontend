@@ -13,25 +13,32 @@ import Profile from "./pages/profile";
 import Berita from "./pages/berita";
 import BeritaDetail from "./pages/Detailberita";
 
-/* ✅ ADMIN */
+/* ADMIN */
 import BerandaAdmin from "./pages/Admin/beranda";
+import BeritaAdmin from "./pages/Admin/berita";
 import DaftarHargaAdmin from "./pages/Admin/daftarharga";
+import LokasiAdmin from "./pages/Admin/datalokasi";
 import DataUser from "./pages/Admin/datauser";
-
-
 
 function App() {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/admin");
+
+  // Navbar hilang di admin & detail berita
+  const hideNavbar =
+    location.pathname.startsWith("/admin") ||
+    location.pathname.startsWith("/berita/");
+
+  // Footer hilang hanya di admin
+  const hideFooter = location.pathname.startsWith("/admin");
 
   return (
     <>
-      {/* NAVBAR USER / GUEST (bukan untuk admin) */}
-      {!isAdminRoute && <NavbarWrapper />}
-      {!isAdminRoute && <div className="pt-20" />}
+      {/* NAVBAR */}
+      {!hideNavbar && <NavbarWrapper />}
+      {!hideNavbar && <div className="pt-20" />}
 
       <Routes>
-        {/* USER / PUBLIC */}
+        {/* USER */}
         <Route path="/" element={<Homepage />} />
         <Route path="/berita" element={<Berita />} />
         <Route path="/berita/:id" element={<BeritaDetail />} />
@@ -44,19 +51,16 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* ADMIN – di dalam komponen ini kamu bebas pakai Navbaradmin sendiri */}
+        {/* ADMIN */}
         <Route path="/admin/beranda" element={<BerandaAdmin />} />
+        <Route path="/admin/berita" element={<BeritaAdmin />} />
         <Route path="/admin/daftarharga" element={<DaftarHargaAdmin />} />
+        <Route path="/admin/datalokasi" element={<LokasiAdmin />} />
         <Route path="/admin/datauser" element={<DataUser />} />
       </Routes>
 
-      {/* FOOTER USER (tidak muncul di admin) */}
-      {!isAdminRoute && (
-        <>
-          <div className="pt-20" />
-          <Footer />
-        </>
-      )}
+      {/* FOOTER */}
+      {!hideFooter && <Footer />}
     </>
   );
 }
