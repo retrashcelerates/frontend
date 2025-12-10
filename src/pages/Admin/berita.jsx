@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import DataImage from "../../data";
 
-import AdminSidebar from "../../components/AdminSidebar";
-import AdminNavbar from "../../components/AdminNavbar";
+import Navbaradmin from "../../components/Navbaradmin";
 import TambahBerita from "../../components/FormTambahBerita";
 import EditBerita from "../../components/FormEditBerita";
 import DeleteConfirm from "../../components/DeleteBerita";
+import Footeradmin from "../../components/Footeradmin";
 
 const API_URL = "https://backend-deployment-topaz.vercel.app/api/berita";
 
@@ -21,7 +21,7 @@ const AdminBerita = () => {
 
   const [selectedId, setSelectedId] = useState(null);
 
-  // Fetch berita
+  // FETCH BERITA
   const fetchData = () => {
     axios
       .get(API_URL)
@@ -40,15 +40,20 @@ const AdminBerita = () => {
     fetchData();
   }, []);
 
-  // Filter hasil pencarian
+  // FILTER SEARCH
   const filtered = berita.filter((item) =>
     (item.judul || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  // Delete fungsi
+  // DELETE BERITA
   const handleDelete = async () => {
     try {
-      await axios.delete(`${API_URL}/${selectedId}`);
+      await axios.delete(`${API_URL}/${selectedId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
       setOpenDelete(false);
       fetchData();
     } catch (err) {
@@ -58,17 +63,50 @@ const AdminBerita = () => {
   };
 
   return (
-    <div className="flex bg-gray-100 min-h-screen">
-      <AdminSidebar />
+    <div className="bg-[#F7F7F7] min-h-screen flex">
 
-      <div className="flex-1 bg-white">
-        <AdminNavbar />
+      {/* SIDEBAR + NAVBAR ADMIN */}
+      <Navbaradmin />
+
+      {/* KONTEN UTAMA */}
+      <div className="flex-1 lg:ml-64 bg-[#FFFFFF] min-h-screen overflow-x-hidden">
+
+        {/* HEADER FIXED */}
+        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)]
+                        z-40 bg-[#FFFFFF] border-b border-gray-200 shadow">
+          <div className="h-16 flex items-center justify-between px-6">
+            <div>
+              <h1 className="font-semibold text-[23px]">Daftar Berita</h1>
+              <p className="text-gray-600 text-[15px]">
+                Kelola seluruh berita ReTrash.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <img
+                src="https://i.pravatar.cc/150?img=12"
+                className="w-10 h-10 rounded-full"
+                alt="profile"
+              />
+              <div>
+                <p className="font-semibold text-sm">Indi Ariyanti</p>
+                <p className="text-gray-500 text-xs">Admin</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* MAIN CONTENT */}
+        <div className="pt-[100px] px-6 pb-36">
+
+          {/* SEARCH + BUTTON TAMBAH */}
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
 
         <div className="p-6">
           {/* Header Search + Tambah Berita */}
           <div className="flex justify-between items-center mb-6">
             {/* SEARCH */}
-            <div className="relative">
+            <div className="relative w-full sm:w-64 ">
               <img
                 src={DataImage.SearchIcon}
                 alt="search"
@@ -80,24 +118,29 @@ const AdminBerita = () => {
                 placeholder="Cari berita..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="text-sm border pl-10 pr-4 bg-white py-2 rounded-lg w-64 shadow-sm"
+                className="border border-gray-500 pl-10 pr-4 bg-white py-2 rounded-lg w-full shadow-sm"
               />
             </div>
 
             {/* BUTTON TAMBAH */}
             <button
               onClick={() => setOpenTambah(true)}
-              className="bg-[#47CF65] text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+              className="bg-[#47CF65] text-white px-4 py-2 rounded-lg hover:bg-green-700 transition w-full sm:w-auto"
             >
               + Tambah Berita
             </button>
           </div>
 
           {/* TABLE */}
-          <div className="bg-white rounded-xl shadow border border-[#857A7A] overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-[#D8D8D8] text-black text-sm border-b">
+          <div className="bg-white rounded-xl shadow border border-gray-500 overflow-x-auto">
+            
+            <table className="w-full min-w-[850px]">
+              <thead className="bg-[#D8D8D8] text-black text-sm">
                 <tr className="h-14">
+                  <th className="px-5 text-left w-[45%] font-semibold">Judul</th>
+                  <th className="px-5 text-center w-[20%] font-semibold">Tanggal</th>
+                  <th className="px-5 text-center w-[15%] font-semibold">Status</th>
+                  <th className="px-5 text-center w-[20%] font-semibold">Aksi</th>
                   <th className="px-10 text-left w-[45%] font-semibold">
                     Judul
                   </th>
@@ -120,33 +163,39 @@ const AdminBerita = () => {
                       Memuat data...
                     </td>
                   </tr>
-                ) : filtered.length > 0 ? (
+                ) : filtered.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="text-center py-10 text-gray-500">
+                      Tidak ada berita ditemukan.
+                    </td>
+                  </tr>
+                ) : (
                   filtered.map((item) => (
-                    <tr key={item.id} className="border-t hover:bg-gray-50">
+                    <tr key={item.id} className="border-t border-gray-500 hover:bg-gray-50">
+
+
                       {/* Judul + Gambar */}
-                      <td className="p-3 flex gap-3 items-center">
+                      <td className="p-3 flex items-center gap-3">
                         <img
                           src={item.image_url}
                           className="w-20 h-16 object-cover rounded-md"
+                          alt="thumbnail"
                         />
                         <div>
-                          <p className="font-medium">{item.judul}</p>
-                          <p className="text-xs text-gray-500 line-clamp-1">
-                            {item.konten}
-                          </p>
+                          <p className="font-medium text-sm">{item.judul}</p>
                         </div>
                       </td>
 
                       {/* Tanggal */}
-                      <td className="text-center text-sm text-gray-600">
+                      <td className="text-center text-sm text-black">
                         {new Date(item.created_at).toLocaleDateString("id-ID")}
                       </td>
 
                       {/* Status */}
                       <td className="text-center">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs ${
-                            item.status === "terbit"
+                          className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            item.status === "draft"
                               ? "bg-yellow-100 text-yellow-600"
                               : "bg-green-100 text-green-600"
                           }`}
@@ -155,8 +204,8 @@ const AdminBerita = () => {
                         </span>
                       </td>
 
-                      {/* ACTION BUTTONS */}
-                      <td className="py-2 w-[120px]">
+                      {/* ACTION */}
+                      <td className="py-2">
                         <div className="flex items-center justify-center gap-4">
                           {/* EDIT */}
                           <button
@@ -164,13 +213,9 @@ const AdminBerita = () => {
                               setSelectedId(item.id);
                               setOpenEdit(true);
                             }}
-                            className="hover:opacity-80"
+                            className="hover:opacity-60"
                           >
-                            <img
-                              src={DataImage.EditIcon}
-                              alt="Edit"
-                              className="w-5 h-5"
-                            />
+                            <img src={DataImage.EditIcon} className="w-5" />
                           </button>
 
                           {/* DELETE */}
@@ -179,29 +224,26 @@ const AdminBerita = () => {
                               setSelectedId(item.id);
                               setOpenDelete(true);
                             }}
-                            className="hover:opacity-80"
+                            className="hover:opacity-60"
                           >
-                            <img
-                              src={DataImage.DeleteIcon}
-                              alt="Delete"
-                              className="w-5 h-5"
-                            />
+                            <img src={DataImage.DeleteIcon} className="w-5" />
                           </button>
                         </div>
                       </td>
                     </tr>
                   ))
-                ) : (
-                  <tr>
-                    <td colSpan={4} className="text-center py-10 text-gray-500">
-                      Tidak ada berita ditemukan.
-                    </td>
-                  </tr>
                 )}
               </tbody>
             </table>
           </div>
         </div>
+
+        {/* FOOTER FIXED */}
+        <div className="fixed bottom-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)]
+                        bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-50">
+          <Footeradmin />
+        </div>
+
       </div>
 
       {/* MODAL TAMBAH */}
@@ -231,6 +273,7 @@ const AdminBerita = () => {
         onClose={() => setOpenDelete(false)}
         onDelete={handleDelete}
       />
+
     </div>
   );
 };

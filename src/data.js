@@ -9,6 +9,7 @@ import setorImage from "/assets/setor.jpeg";
 import SearchIcon from "/assets/icon/search.svg";
 import EditIcon from "/assets/icon/edit.svg";
 import DeleteIcon from "/assets/icon/delete.svg";
+import CentangIcon from "/assets/icon/centang.svg";
 
 const DataImage = {
   HeroImage,
@@ -22,6 +23,7 @@ const DataImage = {
   SearchIcon,
   EditIcon,
   DeleteIcon,
+  CentangIcon,
 };
 
 export default DataImage;
