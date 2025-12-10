@@ -15,11 +15,7 @@ export default function BerandaAdmin() {
   const [jumlahTransaksi, setJumlahTransaksi] = useState(0);
 
   useEffect(() => {
-    // Hapus chart lama kalau ada (biar nggak double di StrictMode)
-    if (lineInstance.current) lineInstance.current.destroy();
-    if (pieInstance.current) pieInstance.current.destroy();
-
-    // Ambil data setoran dari backend
+    // Fetch data setoran
     fetch("https://backend-deployment-topaz.vercel.app/api/setor", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,23 +24,20 @@ export default function BerandaAdmin() {
       .then((res) => res.json())
       .then((json) => {
         const list = json.data || [];
-
         const total = list.reduce(
           (sum, item) => sum + parseFloat(item.kuantitas || 0),
           0
         );
-
         setTotalSampah(total);
         setJumlahTransaksi(list.length);
       })
-      .catch((err) => console.error("Fetch error:", err));
+      .catch(() => {});
 
-    // Pastikan ref canvas sudah ada
-    if (!lineChartRef.current || !pieChartRef.current) {
-      return;
-    }
+    // Cleanup chart instance (React StrictMode)
+    if (lineInstance.current) lineInstance.current.destroy();
+    if (pieInstance.current) pieInstance.current.destroy();
 
-    // LINE CHART
+    // Init Line Chart
     lineInstance.current = new Chart(lineChartRef.current, {
       type: "line",
       data: {
@@ -62,7 +55,10 @@ export default function BerandaAdmin() {
       options: { responsive: true, maintainAspectRatio: false },
     });
 
-    // PIE CHART
+    // Init Pie Chart
+    // Init Pie Chart
+    if (pieInstance.current) pieInstance.current.destroy();
+
     pieInstance.current = new Chart(pieChartRef.current, {
       type: "doughnut",
       data: {
@@ -74,10 +70,29 @@ export default function BerandaAdmin() {
           },
         ],
       },
-      options: { responsive: true, maintainAspectRatio: false },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        // Membuat donut lebih proporsional dan center
+        cutout: "50%",
+        layout: { padding: 0 },
+
+        plugins: {
+          legend: {
+            position: "bottom", // legend di bawah
+            align: "center", // rata tengah
+            labels: {
+              usePointStyle: true,
+              pointStyle: "circle", // bulat seperti gambar contoh
+              padding: 15,
+              boxWidth: 12,
+            },
+          },
+        },
+      },
     });
 
-    // Cleanup saat unmount
     return () => {
       if (lineInstance.current) lineInstance.current.destroy();
       if (pieInstance.current) pieInstance.current.destroy();
@@ -86,39 +101,37 @@ export default function BerandaAdmin() {
 
   return (
     <div className="bg-[#F7F7F7] min-h-screen flex flex-col">
-      {/* WRAPPER UTAMA: NAVBAR + KONTEN */}
       <div className="flex flex-1">
-        {/* NAVBAR ADMIN */}
         <Navbaradmin />
 
-        {/* CONTENT WRAPPER */}
-        <div className="flex-1 lg:ml-64 px-6 pt-10 pb-10">
-          {/* HEADER TITLE */}
-          <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h1 className="font-semibold text-[23px]">Dashboard Utama</h1>
-              <p className="text-gray-600 text-[18px]">
-                Performa dan Status Operasional
-              </p>
-            </div>
-
-            {/* USER INFO */}
-            <div className="flex items-center gap-3">
-              <img
-                src="https://i.pravatar.cc/150?img=12"
-                className="w-10 h-10 rounded-full"
-                alt="profile"
-              />
+        {/* Content */}
+        <div className="flex-1 lg:ml-64 px-6 pt-[84px] pb-[160px]">
+          {/* Header */}
+          <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.18)]">
+            <div className="h-16 flex items-center justify-between px-6">
               <div>
-                <p className="font-semibold text-sm">Indi Ariyanti</p>
-                <p className="text-gray-500 text-xs">Admin</p>
+                <h1 className="font-semibold text-[23px]">Dashboard Utama</h1>
+                <p className="text-gray-600 text-[15px]">
+                  Performa dan Status Operasional
+                </p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <img
+                  src="https://i.pravatar.cc/150?img=12"
+                  className="w-10 h-10 rounded-full"
+                  alt="profile"
+                />
+                <div>
+                  <p className="font-semibold text-sm">Indi Ariyanti</p>
+                  <p className="text-gray-500 text-xs">Admin</p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* TOP CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {/* TOTAL SAMPAH */}
+          {/* Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
             <div className="bg-white shadow rounded-xl p-5">
               <p className="text-sm font-semibold">Total Sampah Terkumpul</p>
               <h2 className="text-2xl font-bold mt-3">
@@ -129,7 +142,6 @@ export default function BerandaAdmin() {
               </p>
             </div>
 
-            {/* JUMLAH NASABAH */}
             <div className="bg-white shadow rounded-xl p-5">
               <p className="text-sm font-semibold">Jumlah Nasabah</p>
               <h2 className="text-2xl font-bold mt-3">1.250</h2>
@@ -138,7 +150,6 @@ export default function BerandaAdmin() {
               </p>
             </div>
 
-            {/* TOTAL TRANSAKSI */}
             <div className="bg-white shadow rounded-xl p-5">
               <p className="text-sm font-semibold">Total Transaksi Bulan Ini</p>
               <h2 className="text-2xl font-bold mt-3">{jumlahTransaksi}</h2>
@@ -148,9 +159,8 @@ export default function BerandaAdmin() {
             </div>
           </div>
 
-          {/* CHARTS */}
+          {/* Charts */}
           <div className="flex flex-col lg:flex-row gap-6 mt-10">
-            {/* LINE CHART */}
             <div className="bg-white shadow rounded-xl p-6 w-full lg:w-[624px]">
               <h2 className="font-semibold mb-4 text-[18px]">
                 Tren Setoran Sampah (6 Bulan Terakhir)
@@ -160,7 +170,6 @@ export default function BerandaAdmin() {
               </div>
             </div>
 
-            {/* PIE CHART */}
             <div className="bg-white shadow rounded-xl p-6 w-full lg:w-[347px]">
               <h2 className="font-semibold mb-4 text-[18px]">
                 Distribusi Kategori Sampah
@@ -178,8 +187,10 @@ export default function BerandaAdmin() {
         </div>
       </div>
 
-      {/* FOOTER ADMIN FULL-LEBAR */}
-      <Footeradmin />
+      {/* FOOTER FIXED – SAMPING NAVBAR SAJA */}
+      <div className="fixed bottom-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-50 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.1)]">
+        <Footeradmin />
+      </div>
     </div>
   );
 }

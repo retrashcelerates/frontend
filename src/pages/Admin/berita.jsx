@@ -102,6 +102,9 @@ const AdminBerita = () => {
           {/* SEARCH + BUTTON TAMBAH */}
           <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6">
 
+        <div className="p-6">
+          {/* Header Search + Tambah Berita */}
+          <div className="flex justify-between items-center mb-6">
             {/* SEARCH */}
             <div className="relative w-full sm:w-64 ">
               <img
@@ -138,6 +141,18 @@ const AdminBerita = () => {
                   <th className="px-5 text-center w-[20%] font-semibold">Tanggal</th>
                   <th className="px-5 text-center w-[15%] font-semibold">Status</th>
                   <th className="px-5 text-center w-[20%] font-semibold">Aksi</th>
+                  <th className="px-10 text-left w-[45%] font-semibold">
+                    Judul
+                  </th>
+                  <th className="px-10 text-center w-[20%] font-semibold">
+                    Tanggal Publikasi
+                  </th>
+                  <th className="px-10 text-center w-[20%] font-semibold">
+                    Status
+                  </th>
+                  <th className="px-10 text-center w-[15%] font-semibold">
+                    Aksi
+                  </th>
                 </tr>
               </thead>
 
@@ -157,6 +172,7 @@ const AdminBerita = () => {
                 ) : (
                   filtered.map((item) => (
                     <tr key={item.id} className="border-t border-gray-500 hover:bg-gray-50">
+
 
                       {/* Judul + Gambar */}
                       <td className="p-3 flex items-center gap-3">
@@ -191,7 +207,6 @@ const AdminBerita = () => {
                       {/* ACTION */}
                       <td className="py-2">
                         <div className="flex items-center justify-center gap-4">
-
                           {/* EDIT */}
                           <button
                             onClick={() => {
@@ -213,10 +228,8 @@ const AdminBerita = () => {
                           >
                             <img src={DataImage.DeleteIcon} className="w-5" />
                           </button>
-
                         </div>
                       </td>
-
                     </tr>
                   ))
                 )}

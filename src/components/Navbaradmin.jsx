@@ -9,7 +9,9 @@ import {
   FaBars,
   FaTimes,
   FaMapMarkerAlt
+  FaLocationArrow,
 } from "react-icons/fa";
+import { FaLocationDot, FaLocationPin } from "react-icons/fa6";
 
 export default function Navbaradmin() {
   const location = useLocation();
@@ -21,6 +23,7 @@ export default function Navbaradmin() {
     { name: "Berita", icon: <FaNewspaper />, path: "/admin/berita" },
     { name: "Daftar Harga", icon: <FaTags />, path: "/admin/daftarharga" },
     { name: "Lokasi Setor", icon: <FaMapMarkerAlt />, path: "/admin/datalokasi" },
+    { name: "Lokasi", icon: <FaLocationPin />, path: "/admin/lokasi" },
     { name: "Daftar User", icon: <FaUsers />, path: "/admin/datauser" },
   ];
 

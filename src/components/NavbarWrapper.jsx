@@ -1,7 +1,6 @@
-import { useLocation } from "react-router-dom";
+// src/components/NavbarWrapper.jsx
 import Navbar from "./Navbar";
 import Navbarprofile from "./Navbarprofile";
-// Navbaradmin tidak dipakai di sini lagi
 
 const NavbarWrapper = () => {
   const location = useLocation();
@@ -23,12 +22,10 @@ const NavbarWrapper = () => {
     user = null;
   }
 
-  // user login biasa → Navbarprofile
-  if (user) {
-    return <Navbarprofile />;
-  }
+  // user login → pakai navbar profile
+  if (user) return <Navbarprofile />;
 
-  // belum login → Navbar umum
+  // user belum login → navbar biasa
   return <Navbar />;
 };
 

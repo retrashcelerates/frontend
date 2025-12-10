@@ -11,7 +11,7 @@ const Navbar = () => {
 
   const menu = [
     { name: "Beranda", type: "scroll", target: "beranda" },
-    { name: "Tentang Kami", type: "scroll", target: "tentang" },
+    { name: "Tentang Kami", type: "route", path: "/tentang" },
     { name: "Berita", type: "route", path: "/Berita" },
     { name: "Program", type: "route", path: "/Setor" },
     { name: "Daftar Harga", type: "route", path: "/Daftarharga" },
@@ -44,7 +44,6 @@ const Navbar = () => {
   return (
     <nav className="w-full bg-white shadow-xs fixed top-0 left-0 z-50 h-20 flex items-center">
       <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between">
-
         {/* LOGO */}
         <button
           onClick={() => handleNavigateAndScroll("beranda")}
@@ -59,7 +58,6 @@ const Navbar = () => {
 
         {/* DESKTOP MENU */}
         <div className="hidden md:flex space-x-3 text-sm">
-
           {menu.map((item) =>
             item.type === "route" ? (
               <NavLink
@@ -93,7 +91,6 @@ const Navbar = () => {
               </button>
             )
           )}
-
         </div>
 
         <button
@@ -127,7 +124,6 @@ const Navbar = () => {
         `}
       >
         <ul className="flex flex-col px-6 py-4 space-y-3">
-
           {menu.map((item) =>
             item.type === "route" ? (
               <NavLink
@@ -162,10 +158,8 @@ const Navbar = () => {
               </button>
             )
           )}
-
         </ul>
       </div>
-
     </nav>
   );
 };
