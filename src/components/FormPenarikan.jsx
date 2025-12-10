@@ -482,8 +482,7 @@ function PenarikanBerhasil({
         </div>
         <h2 className="text-lg font-semibold">Penarikan Berhasil!</h2>
         <p className="text-xs opacity-90 mt-1">
-          Permintaan Anda sedang diproses dan akan ditransfer dalam 1–2 hari
-          kerja.
+          Permintaan Anda Berhasil di transfer ke rekening tujuan
         </p>
 
         {/* Badge kode transaksi */}
@@ -548,7 +547,7 @@ function PenarikanBerhasil({
           <div>
             <p className="font-semibold mb-0.5">Berhasil</p>
             <p>
-              Anda akan menerima notifikasi setelah dana berhasil ditransfer.
+              Dana anda telah berhasil ditransfer.
               Cek <span className="font-semibold">Riwayat Penarikan</span> di
               halaman profil untuk memantau status.
             </p>
