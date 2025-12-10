@@ -3,7 +3,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useNavigate } from "react-router-dom";
 import FormSetor from "../components/Formsetor";
-import Navbarprofil from "../components/Navbarprofile";
 
 import DataImage from "../data";
 
@@ -19,7 +18,7 @@ export default function Setor() {
   }, []);
 
   return (
-    <div className="w-full px-4 md:px-0">
+    <div className="w-full px-4 md:pt-25">
       <div className="max-w-6xl mx-auto">
 
         <div className="relative w-full h-[400px] md:h-[500px] rounded-md overflow-hidden">
