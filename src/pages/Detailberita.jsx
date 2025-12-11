@@ -72,7 +72,7 @@ const BeritaDetail = () => {
                 text-green-600 font-semibold
                 group-hover:text-gray-900 transition
               ">
-                Back
+                Kembali
               </span>
             </button>
 

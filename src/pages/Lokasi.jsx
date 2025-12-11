@@ -28,7 +28,7 @@ export default function Lokasi() {
           return;
         }
 
-        // Map data dari BE ke struktur yang dipakai FE
+        // Map data dari BE ke FE
         const mapped = (json.data || []).map((item) => {
           const alamatParts = [
             item.jalan,
@@ -42,8 +42,8 @@ export default function Lokasi() {
             id: item.id,
             nama: item.name,
             alamat: alamatParts.join(", "),
-            jam: "Sen - Jum, 08:00 - 17:30", // sementara statis
-            image_url: item.image_url || null, // langsung dari backend
+            jam: "Sen - Jum, 08:00 - 17:30",
+            image_url: item.image_url || null,
           };
         });
 
@@ -69,6 +69,25 @@ export default function Lokasi() {
     <div className="min-h-screen flex flex-col bg-green-50">
       {/* ===== CONTENT ===== */}
       <div className="max-w-6xl mx-auto px-6 py-16 text-center flex-grow">
+
+        {/* ===== TOMBOL KEMBALI ===== */}
+        <div
+          className="
+            flex items-center gap-2 
+            text-green-600 font-medium 
+            mb-6 cursor-pointer w-fit
+            px-1 py-1
+            hover:text-green-700 
+            transition-all
+            active:scale-95
+          "
+          onClick={() => window.history.back()}
+        >
+          <span className="text-md sm:text-2xl text-black">&lt;</span>
+          <span className="text-lg sm:text-md font-semibold">Kembali</span>
+        </div>
+
+
         <h1 className="text-3xl font-bold text-gray-800">
           Lokasi Penyetoran Sampah
         </h1>
@@ -79,8 +98,7 @@ export default function Lokasi() {
 
         <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
           Temukan lokasi titik penyetoran sampah terdekat di Surabaya Selatan.
-          Setor sampah Anda langsung ke lokasi dengan jadwal operasional yang
-          fleksibel.
+          Setor sampah Anda langsung ke lokasi dengan jadwal operasional yang fleksibel.
         </p>
 
         {/* Search */}
@@ -96,14 +114,10 @@ export default function Lokasi() {
 
         {/* Error / Loading */}
         {error && (
-          <p className="mt-4 text-sm text-red-600">
-            {error}
-          </p>
+          <p className="mt-4 text-sm text-red-600">{error}</p>
         )}
         {loading && !error && (
-          <p className="mt-4 text-sm text-gray-500">
-            Memuat data lokasi...
-          </p>
+          <p className="mt-4 text-sm text-gray-500">Memuat data lokasi...</p>
         )}
 
         {/* Cards */}
@@ -114,7 +128,7 @@ export default function Lokasi() {
                 key={item.id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:-translate-y-1 transition-all"
               >
-                {/* Gambar dari backend */}
+                {/* Gambar */}
                 {item.image_url ? (
                   <img
                     src={item.image_url}

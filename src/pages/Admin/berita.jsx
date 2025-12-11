@@ -178,14 +178,14 @@ const AdminBerita = () => {
       <Navbaradmin />
 
       {/* KONTEN UTAMA */}
-      <div className="flex-1 lg:ml-64 bg-[#F7F7F7] min-h-screen overflow-x-hidden">
+      <div className="flex-1 lg:ml-64 bg-[#FFFFFF] min-h-screen overflow-x-hidden">
         {/* HEADER FIXED (sudah pakai avatar admin) */}
-        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow">
+        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#FFFFFF] border-b border-gray-200 shadow-sm">
           <div className="h-16 flex items-center justify-between px-6">
             <div>
-              <h1 className="font-semibold text-[23px]">Daftar Berita</h1>
-              <p className="text-gray-600 text-[15px]">
-                Kelola seluruh berita ReTrash.
+              <h1 className="font-semibold text-[18px]">Daftar Berita</h1>
+              <p className="text-gray-600 text-[12px]">
+                Kelola seluruh berita ReTrash
               </p>
             </div>
 
@@ -259,12 +259,14 @@ const AdminBerita = () => {
               </div>
 
               {/* BUTTON TAMBAH */}
-              <button
-                onClick={() => setOpenTambah(true)}
-                className="bg-[#47CF65] text-white px-4 py-2 rounded-lg hover:bg-green-700 transition w-full sm:w-auto"
-              >
-                + Tambah Berita
-              </button>
+            <button
+              onClick={() => {
+                setOpenTambah(true);
+              }}
+              className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-md px-4 py-2 shadow-sm transition"
+            >
+              + Tambah Berita
+            </button>
             </div>
 
             {/* TABLE */}

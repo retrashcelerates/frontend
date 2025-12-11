@@ -224,18 +224,18 @@ export default function DataUser() {
   };
 
   return (
-    <div className="bg-[#F7F7F7] min-h-screen flex flex-col">
+    <div className="bg-[#FFFFFF] min-h-screen flex flex-col">
       <div className="flex flex-1 pb-20">
         <Navbaradmin />
 
         {/* MAIN CONTENT */}
         <div className="flex-1 lg:ml-64 px-6 pt-[84px] pb-10">
           {/* HEADER FIXED */}
-          <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow">
+          <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#FFFFFF] border-b border-gray-200 shadow-sm">
             <div className="h-16 px-6 flex items-center justify-between">
               <div>
-                <h1 className="text-[23px] font-semibold">Daftar User</h1>
-                <p className="text-[15px] text-gray-600">
+                <h1 className="text-[18px] font-semibold">Daftar User</h1>
+                <p className="text-[12px] text-gray-600">
                   Kelola data pelanggan bank sampah.
                 </p>
               </div>
@@ -317,9 +317,10 @@ export default function DataUser() {
 
             {/* BUTTON TAMBAH */}
             <button
-              onClick={() => setOpenAdd(true)}
-              disabled={saving}
-              className="bg-[#47CF65] hover:bg-green-700 text-white px-4 py-2 rounded-lg transition font-semibold shadow-sm disabled:opacity-60 w-full sm:w-auto"
+              onClick={() => {
+                setOpenAdd(true);
+              }}
+              className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-md px-4 py-2 shadow-sm transition"
             >
               + Tambah User
             </button>
@@ -420,13 +421,38 @@ export default function DataUser() {
         <Footeradmin />
       </div>
 
-      {/* MODALS */}
+      {/* MODAL TAMBAH USER */}
       <AddUserModal
         open={openAdd}
         onClose={() => setOpenAdd(false)}
-        onSave={() => {}}
+        onSave={async (form) => {
+          try {
+            const token = localStorage.getItem("token");
+            const res = await fetch(`${API_BASE_URL}/users`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify(form),
+            });
+
+            const json = await res.json();
+
+            if (!res.ok) {
+              alert(json.message || "Gagal menambah user");
+              return false;
+            }
+
+            await fetchUsers();
+            return true; // ← WAJIB agar popup sukses muncul
+          } catch {
+            return false;
+          }
+        }}
       />
 
+      {/* MODAL EDIT USER */}
       <EditUserModal
         open={openEdit}
         user={editUser}
@@ -434,7 +460,34 @@ export default function DataUser() {
           setOpenEdit(false);
           setEditUser(null);
         }}
-        onSave={() => {}}
+        onSave={async ({ id, role }) => {
+          try {
+            const token = localStorage.getItem("token");
+
+            const res = await fetch(`${API_BASE_URL}/users/${id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ role }),
+            });
+
+            const json = await res.json();
+
+            if (!res.ok) {
+              alert(json.message || "Gagal mengedit user");
+              return false;
+            }
+
+            await fetchUsers(); // refresh tabel
+            return true; // untuk menampilkan popup sukses
+          } catch (err) {
+            console.error(err);
+            alert("Terjadi kesalahan.");
+            return false;
+          }
+        }}
       />
     </div>
   );
