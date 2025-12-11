@@ -1,5 +1,5 @@
 // src/pages/Admin/berita.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import DataImage from "../../data";
 
@@ -11,6 +11,10 @@ import Footeradmin from "../../components/Footeradmin";
 
 const API_URL = "https://backend-deployment-topaz.vercel.app/api/berita";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://backend-deployment-topaz.vercel.app/api";
+
 const AdminBerita = () => {
   const [berita, setBerita] = useState([]);
   const [search, setSearch] = useState("");
@@ -21,6 +25,13 @@ const AdminBerita = () => {
   const [openDelete, setOpenDelete] = useState(false);
 
   const [selectedId, setSelectedId] = useState(null);
+
+  // ====== STATE PROFILE ADMIN & AVATAR ======
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
+  const fileInputRef = useRef(null);
 
   // FETCH BERITA
   const fetchData = () => {
@@ -37,14 +48,49 @@ const AdminBerita = () => {
       });
   };
 
+  // FETCH PROFIL ADMIN
+  const fetchProfile = async () => {
+    try {
+      setLoadingProfile(true);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoadingProfile(false);
+        return;
+      }
+
+      const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const json = await res.json();
+      if (res.ok) {
+        setCurrentUser(json.data || null);
+      } else {
+        console.error("Gagal mengambil profil:", json);
+      }
+    } catch (err) {
+      console.error("Error mengambil profil:", err);
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchProfile();
   }, []);
 
   // FILTER SEARCH
   const filtered = berita.filter((item) =>
     (item.judul || "").toLowerCase().includes(search.toLowerCase())
   );
+
+  // URL AVATAR: kalau belum ada, pakai ui-avatars background hijau
+  const avatarUrl =
+    currentUser?.avatar_url ||
+    (currentUser?.username
+      ? `https://ui-avatars.com/api/?name=${currentUser.username}&background=60BE75&color=ffffff&bold=true`
+      : "https://ui-avatars.com/api/?name=User&background=60BE75&color=ffffff&bold=true");
 
   // DELETE BERITA
   const handleDelete = async () => {
@@ -63,6 +109,69 @@ const AdminBerita = () => {
     }
   };
 
+  // HANDLE KLIK AVATAR → BUKA PILIH FILE
+  const handleAvatarClick = () => {
+    if (uploadingAvatar) return;
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // HANDLE UPLOAD AVATAR BARU
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setAvatarError("");
+
+    if (!file.type.startsWith("image/")) {
+      setAvatarError("File harus berupa gambar (jpg, png, dll).");
+      return;
+    }
+
+    try {
+      setUploadingAvatar(true);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setAvatarError("Token tidak ditemukan. Silakan login ulang.");
+        return;
+      }
+
+      const formData = new FormData();
+      // sesuaikan dengan field backend
+      formData.append("avatar", file);
+
+      const res = await fetch(`${API_BASE_URL}/auth/profile/avatar`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.error("Gagal upload avatar:", json);
+        setAvatarError(json.message || "Gagal mengunggah avatar.");
+        return;
+      }
+
+      if (json.data?.avatar_url) {
+        setCurrentUser((prev) =>
+          prev ? { ...prev, avatar_url: json.data.avatar_url } : prev
+        );
+      }
+    } catch (err) {
+      console.error("Error upload avatar:", err);
+      setAvatarError("Terjadi kesalahan saat upload avatar.");
+    } finally {
+      setUploadingAvatar(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   return (
     <div className="bg-[#F7F7F7] min-h-screen flex">
       {/* SIDEBAR + NAVBAR ADMIN */}
@@ -70,7 +179,7 @@ const AdminBerita = () => {
 
       {/* KONTEN UTAMA */}
       <div className="flex-1 lg:ml-64 bg-[#F7F7F7] min-h-screen overflow-x-hidden">
-        {/* HEADER FIXED */}
+        {/* HEADER FIXED (sudah pakai avatar admin) */}
         <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow">
           <div className="h-16 flex items-center justify-between px-6">
             <div>
@@ -81,21 +190,53 @@ const AdminBerita = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <img
-                src="https://i.pravatar.cc/150?img=12"
-                className="w-10 h-10 rounded-full"
-                alt="profile"
-              />
+              <button
+                type="button"
+                onClick={handleAvatarClick}
+                className="relative group"
+                title="Klik untuk ganti foto profil"
+              >
+                <img
+                  src={avatarUrl}
+                  className="w-10 h-10 rounded-full border object-cover"
+                  alt="avatar"
+                />
+                {/* overlay kecil saat hover */}
+                <span className="absolute inset-0 rounded-full bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[10px] text-white transition">
+                  Ubah
+                </span>
+              </button>
+
               <div>
-                <p className="font-semibold text-sm">Indi Ariyanti</p>
-                <p className="text-gray-500 text-xs">Admin</p>
+                <p className="font-semibold text-sm">
+                  {loadingProfile ? "Memuat…" : currentUser?.username || "-"}
+                </p>
+                <p className="text-gray-500 text-xs">
+                  {currentUser?.role === "admin" ? "Admin" : "User"}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* INPUT FILE HIDDEN UNTUK AVATAR */}
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          className="hidden"
+          onChange={handleAvatarChange}
+        />
+
         {/* MAIN CONTENT */}
         <div className="pt-[115px] px-6 pb-36">
+          {/* error avatar kalau ada */}
+          {avatarError && (
+            <div className="w-full max-w-5xl mx-auto mb-3 text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+              {avatarError}
+            </div>
+          )}
+
           {/* WRAPPER SUPAYA LEBIH KE TENGAH & RAPI */}
           <div className="w-full max-w-5xl mx-auto">
             {/* Header Search + Tambah Berita */}

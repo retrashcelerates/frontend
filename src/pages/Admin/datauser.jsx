@@ -4,7 +4,7 @@ import Navbaradmin from "../../components/Navbaradmin";
 import Footeradmin from "../../components/Footeradmin";
 import AddUserModal from "../../components/TambahUser";
 import EditUserModal from "../../components/EditUser";
-import DataImage from "../../data"; // Search & edit icon
+import DataImage from "../../data"; 
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
@@ -153,8 +153,8 @@ export default function DataUser() {
   const avatarUrl =
     currentUser?.avatar_url ||
     (currentUser?.username
-      ? `https://ui-avatars.com/api/?name=${currentUser.username}`
-      : "https://ui-avatars.com/api/?name=User");
+      ? `https://ui-avatars.com/api/?name=${currentUser.username}&background=60BE75&color=ffffff&bold=true`
+    : "https://ui-avatars.com/api/?name=User&background=60BE75&color=ffffff&bold=true");
 
   // === HANDLE KLIK AVATAR → BUKA FILE PICKER ===
   const handleAvatarClick = () => {
@@ -241,16 +241,15 @@ export default function DataUser() {
               </div>
 
               <div className="flex items-center gap-3">
-                {/* AVATAR BISA DI-CLICK UNTUK GANTI FOTO */}
                 <button
                   type="button"
                   onClick={handleAvatarClick}
-                  className="relative group"
+                  className="relative group "
                   title="Klik untuk ganti foto profil"
                 >
                   <img
                     src={avatarUrl}
-                    className="w-10 h-10 rounded-full border object-cover"
+                    className="w-10 h-10 rounded-full border  object-cover"
                     alt="avatar"
                   />
                   {/* overlay kecil saat hover */}
@@ -264,7 +263,7 @@ export default function DataUser() {
                     {loadingProfile ? "Memuat…" : currentUser?.username || "-"}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {currentUser?.role === "admin" ? "Admin" : "Nasabah"}
+                    {currentUser?.role === "admin" ? "Admin" : "User"}
                   </p>
                 </div>
               </div>
@@ -388,7 +387,7 @@ export default function DataUser() {
                         </td>
 
                         <td className="py-3 px-5 text-center">
-                          {user.role === "admin" ? "Admin" : "Nasabah"}
+                          {user.role === "admin" ? "Admin" : "User"}
                         </td>
 
                         <td className="py-3 px-5 text-center">

@@ -1,5 +1,5 @@
 // src/pages/Admin/daftarharga.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Navbaradmin from "../../components/Navbaradmin";
 import Footeradmin from "../../components/Footeradmin";
 import DataImage from "../../data";
@@ -37,6 +37,13 @@ export default function DaftarHarga() {
   // loading delete
   const [deleteLoading, setDeleteLoading] = useState(false);
 
+  // ===== PROFILE ADMIN & AVATAR =====
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
+  const fileInputRef = useRef(null);
+
   // Format harga ke Rupiah
   const formatRupiah = (angka) => {
     if (angka == null || isNaN(angka)) return "-";
@@ -73,14 +80,112 @@ export default function DaftarHarga() {
     }
   };
 
+  // === FETCH PROFILE ADMIN ===
+  const fetchProfile = async () => {
+    try {
+      setLoadingProfile(true);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoadingProfile(false);
+        return;
+      }
+
+      const res = await fetch(`${API_BASE_URL}/auth/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const json = await res.json();
+      if (res.ok) {
+        setCurrentUser(json.data || null);
+      } else {
+        console.error("Gagal mengambil profil admin:", json);
+      }
+    } catch (err) {
+      console.error("Error mengambil profil admin:", err);
+    } finally {
+      setLoadingProfile(false);
+    }
+  };
+
   useEffect(() => {
     fetchProduk();
+    fetchProfile();
   }, []);
 
   // Filter search (berdasarkan nama produk)
   const filteredData = produkList.filter((item) =>
     (item.nama_produk || "").toLowerCase().includes(search.toLowerCase())
   );
+
+  // ====== URL AVATAR (kalau belum ada → ui-avatars hijau) ======
+  const avatarUrl =
+    currentUser?.avatar_url ||
+    (currentUser?.username
+      ? `https://ui-avatars.com/api/?name=${currentUser.username}&background=60BE75&color=ffffff&bold=true`
+      : "https://ui-avatars.com/api/?name=User&background=60BE75&color=ffffff&bold=true");
+
+  // ====== HANDLE KLIK AVATAR → BUKA FILE PICKER ======
+  const handleAvatarClick = () => {
+    if (uploadingAvatar) return;
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // ====== UPLOAD AVATAR BARU ======
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setAvatarError("");
+
+    if (!file.type.startsWith("image/")) {
+      setAvatarError("File harus berupa gambar (jpg, png, dll).");
+      return;
+    }
+
+    try {
+      setUploadingAvatar(true);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setAvatarError("Token tidak ditemukan. Silakan login ulang.");
+        return;
+      }
+
+      const formData = new FormData();
+      // sesuaikan nama field dengan backend
+      formData.append("avatar", file);
+
+      const res = await fetch(`${API_BASE_URL}/auth/profile/avatar`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        console.error("Gagal upload avatar:", json);
+        setAvatarError(json.message || "Gagal mengunggah avatar.");
+        return;
+      }
+
+      if (json.data?.avatar_url) {
+        setCurrentUser((prev) =>
+          prev ? { ...prev, avatar_url: json.data.avatar_url } : prev
+        );
+      }
+    } catch (err) {
+      console.error("Error upload avatar:", err);
+      setAvatarError("Terjadi kesalahan saat upload avatar.");
+    } finally {
+      setUploadingAvatar(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
 
   // ====== HANDLER TAMBAH PRODUK (POST /produk) ======
   const handleAddSubmit = async () => {
@@ -255,7 +360,7 @@ export default function DaftarHarga() {
 
       {/* MAIN CONTENT */}
       <div className="flex-1 lg:ml-64 bg-[#F7F7F7] min-h-screen">
-        {/* HEADER FIXED */}
+        {/* HEADER FIXED (disamakan dengan halaman lain) */}
         <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow">
           <div className="h-16 flex items-center justify-between px-6">
             <div>
@@ -266,21 +371,60 @@ export default function DaftarHarga() {
             </div>
 
             <div className="flex items-center gap-3">
-              <img
-                src="https://i.pravatar.cc/150?img=12"
-                className="w-10 h-10 rounded-full"
-                alt="profile"
-              />
+              <button
+                type="button"
+                onClick={handleAvatarClick}
+                className="relative group"
+                title="Klik untuk ganti foto profil"
+              >
+                <img
+                  src={avatarUrl}
+                  className="w-10 h-10 rounded-full border object-cover"
+                  alt="avatar"
+                />
+                {/* overlay kecil saat hover */}
+                <span className="absolute inset-0 rounded-full bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center text-[10px] text-white transition">
+                  Ubah
+                </span>
+              </button>
+
               <div>
-                <p className="font-semibold text-sm">Indi Ariyanti</p>
-                <p className="text-gray-500 text-xs">Admin</p>
+                <p className="text-sm font-semibold">
+                  {loadingProfile ? "Memuat…" : currentUser?.username || "-"}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {currentUser?.role === "admin" ? "Admin" : "User"}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* INPUT FILE HIDDEN UNTUK AVATAR */}
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          className="hidden"
+          onChange={handleAvatarChange}
+        />
+
         {/* CONTENT */}
         <div className="pt-[115px] px-6 pb-36">
+          {/* ERROR AVATAR (kalau ada) */}
+          {avatarError && (
+            <div className="w-full max-w-5xl mx-auto mb-3 text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+              {avatarError}
+            </div>
+          )}
+
+          {/* ALERT ERROR CRUD */}
+          {errorMsg && (
+            <div className="w-full max-w-5xl mx-auto mb-4 text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+              {errorMsg}
+            </div>
+          )}
+
           {/* SEARCH BAR + TOMBOL TAMBAH */}
           <div className="w-full max-w-5xl mx-auto mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <div className="relative w-full sm:w-64">
@@ -310,13 +454,6 @@ export default function DaftarHarga() {
               + Tambah Harga
             </button>
           </div>
-
-          {/* ALERT ERROR */}
-          {errorMsg && (
-            <div className="w-full max-w-5xl mx-auto mb-4 text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
-              {errorMsg}
-            </div>
-          )}
 
           {/* TABLE */}
           <div className="w-full max-w-5xl mx-auto">
@@ -368,9 +505,7 @@ export default function DaftarHarga() {
                         <td className="p-3">{item.nama_produk}</td>
 
                         {/* Harga/kg (harga dari BE) */}
-                        <td className="p-3">
-                          {formatRupiah(item.harga)}/kg
-                        </td>
+                        <td className="p-3">{formatRupiah(item.harga)}/kg</td>
 
                         {/* Status – sementara default "Aktif" */}
                         <td className="p-3">
