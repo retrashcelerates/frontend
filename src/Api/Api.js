@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const API = axios.create({
-  baseURL: "https://backend-deployment-topaz.vercel.app" 
+  baseURL: import.meta.env.VITE_API_BASEURL,
 });

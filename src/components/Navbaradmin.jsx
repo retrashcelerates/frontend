@@ -140,25 +140,19 @@ export default function Navbaradmin() {
             </button>
 
             <h3 className="text-lg sm:text-xl font-semibold mb-2">
-              Konfirmasi Logout
+              Konfirmasi Keluar
             </h3>
             <p className="text-sm text-gray-600">
               Apakah Anda yakin ingin keluar dari akun ini?
             </p>
 
             <div className="mt-8 flex justify-end gap-3">
-              <button
-                onClick={() => setShowLogoutConfirm(false)}
-                className="px-5 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 bg-white hover:bg-gray-100"
-              >
-                Batal
-              </button>
 
               <button
                 onClick={handleLogout}
                 className="px-5 py-2 rounded-lg border border-red-500 text-sm font-medium text-red-500 bg-white hover:bg-red-50"
               >
-                Logout
+                Keluar
               </button>
             </div>
           </div>

@@ -7,11 +7,11 @@ const DeleteConfirm = ({ open, onClose, onDelete }) => {
       {/* CARD */}
       <div className="bg-white w-full max-w-sm rounded-xl shadow-lg p-6 animate-fadeIn relative">
 
-        <h3 className="text-sm font-semibold text-black mb-4">
+        <h3 className="text-lg font-semibold text-center">
           Konfirmasi Hapus
         </h3>
 
-        <p className="text-black text-sm leading-relaxed">
+        <p className="text-left text-black mt-4">
           Apakah Anda yakin ingin menghapus berita ini?
           <br />
           Tindakan tidak dapat dibatalkan.

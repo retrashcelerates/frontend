@@ -560,7 +560,7 @@ export default function ProfilePage() {
                 onClick={handleLogoutClick}
                 className="mt-4 w-full border border-red-500 text-red-500 font-medium rounded-lg py-2 shadow-sm hover:bg-red-50 transition"
               >
-                Logout
+                Keluar
               </button>
             </div>
           </div>
@@ -762,7 +762,7 @@ export default function ProfilePage() {
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
             <div className="flex justify-between items-start mb-3">
               <h2 className="text-lg font-semibold text-gray-800">
-                Konfirmasi Logout
+                Konfirmasi Keluar
               </h2>
               <button
                 onClick={handleCancelLogout}
@@ -777,16 +777,10 @@ export default function ProfilePage() {
 
             <div className="flex gap-3 justify-end">
               <button
-                onClick={handleCancelLogout}
-                className="px-4 py-2 rounded-lg border border-gray-300 text-sm text-gray-700 hover:bg-gray-50"
-              >
-                Batal
-              </button>
-              <button
                 onClick={handleConfirmLogout}
                 className="px-4 py-2 rounded-lg border border-red-500 text-red-500 bg-white hover:bg-red-50 text-sm font-medium"
               >
-                Logout
+                Keluar
               </button>
             </div>
           </div>

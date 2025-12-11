@@ -400,15 +400,6 @@ const AdminLokasi = () => {
               >
                 Hapus
               </button>
-              <button
-                onClick={() => {
-                  setOpenDelete(false);
-                  setSelectedId(null);
-                }}
-                className="px-5 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
-              >
-                Batal
-              </button>
             </div>
           </div>
         </div>
