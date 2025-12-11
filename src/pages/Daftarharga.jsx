@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 const Daftarharga = () => {
   const [produk, setProduk] = useState([]);
@@ -34,7 +32,7 @@ const Daftarharga = () => {
 
   return (
     <>
-      <div className="bg-[#F8F9FB] pt-24 pb-5">
+      <div className="bg-white pt-24 pb-5">
         {/* TITLE */}
         <section
           className="text-center max-w-4xl mx-auto px-6"
@@ -79,7 +77,7 @@ const Daftarharga = () => {
             produk.map((item, idx) => (
               <div
                 key={item.id}
-                className="bg-white rounded-2xl shadow p-5"
+                className="bg-white rounded-2xl shadow-lg p-5"
                 data-aos="fade-up"
                 data-aos-delay={100 * idx}
               >
@@ -133,7 +131,7 @@ const Daftarharga = () => {
           ].map((item, i) => (
             <div
               key={i}
-              className="bg-white p-6 rounded-2xl shadow"
+              className="bg-white p-6 rounded-2xl shadow-xl"
               data-aos="zoom-in"
               data-aos-delay={i * 150}
             >

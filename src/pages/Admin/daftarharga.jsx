@@ -236,13 +236,13 @@ export default function DaftarHarga() {
       <Navbaradmin />
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 lg:ml-64 bg-[#F7F7F7] min-h-screen">
+      <div className="flex-1 lg:ml-64 bg-[#FFFFFF] min-h-screen">
         {/* HEADER FIXED */}
-        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow">
+        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#FFFFFF] border-b border-gray-200 shadow-sm">
           <div className="h-16 flex items-center justify-between px-6">
             <div>
-              <h1 className="font-semibold text-[23px]">Daftar Harga</h1>
-              <p className="text-gray-600 text-[15px]">
+              <h1 className="font-semibold text-[18px]">Daftar Harga</h1>
+              <p className="text-gray-600 text-[12px]">
                 Ubah harga dan status sampah
               </p>
             </div>

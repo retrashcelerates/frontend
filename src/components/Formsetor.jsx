@@ -419,7 +419,7 @@ export default function FromSetor() {
 
   // === RENDER HALAMAN ===
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-white flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-6xl mx-auto">
         {/* HEADER */}
         <div className="text-center mb-10">
@@ -439,7 +439,7 @@ export default function FromSetor() {
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* ================= FORM SETOR (KIRI) ================= */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-7">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-7">
             <div className="flex items-center gap-2 mb-5">
               <span className="text-green-500 text-xl font-bold">+</span>
               <h2 className="font-semibold text-gray-800">
@@ -563,7 +563,7 @@ export default function FromSetor() {
 
           {/* ================= SALDO + RIWAYAT (KANAN) ================= */}
           <div className="space-y-4">
-            <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl shadow-sm p-6 md:p-7 flex flex-col justify-between">
+            <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-2xl shadow-lg p-6 md:p-7 flex flex-col justify-between">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-sm font-medium flex items-center gap-2">
                   💰 Total Saldo
@@ -581,7 +581,7 @@ export default function FromSetor() {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-7">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-7">
               <div className="flex items-center gap-2 mb-4">
                 <span className="text-blue-500 text-lg">📅</span>
                 <p className="font-semibold text-gray-800">

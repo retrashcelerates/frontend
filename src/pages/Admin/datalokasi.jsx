@@ -182,14 +182,14 @@ const AdminLokasi = () => {
       <Navbaradmin />
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 lg:ml-64 bg-[#F7F7F7] min-h-screen">
+      <div className="flex-1 lg:ml-64 bg-[#FFFFFF] min-h-screen">
         {/* HEADER FIXED (DISAMAKAN DENGAN DATAUSER) */}
-        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#F7F7F7] border-b border-gray-200 shadow">
+        <div className="fixed top-0 left-0 lg:left-64 w-full lg:w-[calc(100%-16rem)] z-40 bg-[#FFFFFF] border-b border-gray-200 shadow-sm">
           <div className="h-16 px-6 flex items-center justify-between">
             <div>
-              <h1 className="text-[23px] font-semibold">Data Lokasi</h1>
-              <p className="text-[15px] text-gray-600">
-                Kelola data lokasi layanan ReTrash.
+              <h1 className="text-[18px] font-semibold">Data Lokasi</h1>
+              <p className="text-[12px] text-gray-600">
+                Kelola data lokasi layanan ReTrash
               </p>
             </div>
 
@@ -262,8 +262,10 @@ const AdminLokasi = () => {
 
             {/* BUTTON TAMBAH */}
             <button
-              onClick={() => setOpenTambah(true)}
-              className="bg-[#47CF65] hover:bg-green-700 text-white px-4 py-2 rounded-lg w-full sm:w-auto shadow-sm font-semibold"
+              onClick={() => {
+                setOpenTambah(true);
+              }}
+              className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold rounded-md px-4 py-2 shadow-sm transition"
             >
               + Tambah Lokasi
             </button>

@@ -114,7 +114,7 @@ function Homepage() {
       </section>
 
       {/* SECTION FITUR */}
-      <section id="program" className="py-20">
+      <section id="program" className="py-20 bg-white">
         <div
           className="max-w-6xl mx-auto px-6 text-center"
           data-aos="fade-up"
@@ -170,7 +170,7 @@ function Homepage() {
       </section>
 
       {/* SECTION MAP */}
-      <section className="py-10">
+      <section className="py-10 bg-white">
         <div
           className="max-w-6xl mx-auto px-6 text-center"
           data-aos="fade-up"
