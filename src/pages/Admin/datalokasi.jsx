@@ -23,6 +23,9 @@ const AdminLokasi = () => {
   const [openTambah, setOpenTambah] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  // POPUP SUKSES HAPUS
+  const [showSuccess, setShowSuccess] = useState(false);
+
 
   // ===== PROFILE ADMIN & AVATAR =====
   const [currentUser, setCurrentUser] = useState(null);
@@ -84,14 +87,16 @@ const AdminLokasi = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
-      setOpenDelete(false);
-      setSelectedId(null);
-      fetchData();
+      setShowSuccess(true); // ← tampilkan popup sukses
+      return true;
+
     } catch (err) {
       console.error(err);
       alert("Gagal menghapus lokasi!");
+      return false;
     }
   };
+
 
   // FILTER LOKASI BERDASARKAN SEARCH
   const filteredLokasi = lokasi.filter((item) => {
@@ -388,10 +393,12 @@ const AdminLokasi = () => {
       {/* MODAL DELETE */}
       {openDelete && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center px-4">
-          <div className="bg-white w-full max-w-md rounded-xl p-8 shadow-lg">
+          <div className="bg-white w-full max-w-md rounded-xl p-8 shadow-lg relative">
             <h3 className="text-lg font-semibold text-center">Hapus Lokasi?</h3>
+
             <p className="text-left text-black mt-4">
-              Apakah Anda yakin ingin menghapus lokasi ini? <br />
+              Apakah Anda yakin ingin menghapus lokasi ini?
+              <br />
               Tindakan tidak dapat dibatalkan.
             </p>
 
@@ -406,6 +413,38 @@ const AdminLokasi = () => {
           </div>
         </div>
       )}
+
+      {/* POPUP SUKSES DELETE */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center px-4">
+          <div className="bg-white w-full max-w-sm rounded-xl shadow-xl p-7 text-center">
+
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <img
+                src={DataImage.CentangIcon}
+                className="w-12 h-12"
+                alt="success"
+              />
+            </div>
+
+            <h3 className="text-xl font-semibold">Sukses</h3>
+            <p className="text-gray-600 mt-1">Lokasi berhasil dihapus.</p>
+
+            <button
+              onClick={() => {
+                setShowSuccess(false);
+                setOpenDelete(false);
+                setSelectedId(null);
+                fetchData(); 
+              }}
+              className="mt-5 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+            >
+              Oke
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

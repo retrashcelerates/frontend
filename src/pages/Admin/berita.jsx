@@ -101,13 +101,16 @@ const AdminBerita = () => {
         },
       });
 
-      setOpenDelete(false);
       fetchData();
+      return true;  
+
     } catch (err) {
       console.error(err);
       alert("Gagal menghapus berita!");
+      return false; // agar tidak menampilkan sukses
     }
   };
+
 
   // HANDLE KLIK AVATAR → BUKA PILIH FILE
   const handleAvatarClick = () => {
