@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import DataImage from "../data";
 
 const API_URL = "https://backend-deployment-topaz.vercel.app/api/berita";
 
@@ -12,6 +13,10 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // POP UP SUKSES
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
   // =========================
   // FETCH DATA BERITA
@@ -34,9 +39,6 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
       .catch((err) => console.error(err));
   }, [beritaId]);
 
-  // =========================
-  // HANDLE UPLOAD FILE
-  // =========================
   const handleFile = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -45,9 +47,6 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
     }
   };
 
-  // =========================
-  // SUBMIT EDIT BERITA
-  // =========================
   const handleSubmit = async (status) => {
     if (!judul || !konten || !tanggal) {
       alert("Semua field wajib diisi!");
@@ -63,7 +62,6 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
       formData.append("status", status);
       formData.append("author", "Admin");
 
-      // Upload image jika user pilih gambar baru
       if (thumbnail) formData.append("image", thumbnail);
 
       await axios.put(`${API_URL}/${beritaId}`, formData, {
@@ -73,7 +71,15 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
         },
       });
 
-      onSuccess();
+      // 🟢 Pesan sesuai tombol
+      if (status === "draft") {
+        setSuccessMessage("Berhasil menyimpan sebagai draft.");
+      } else {
+        setSuccessMessage("Berhasil memperbarui & mempublish berita.");
+      }
+
+      setShowSuccess(true);
+
     } catch (err) {
       console.error(err);
       alert("Gagal mengubah berita!");
@@ -156,7 +162,7 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
         <div className="flex justify-end mt-6 gap-3">
           <button
             onClick={() => handleSubmit("draft")}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-gray-300"
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-gray-400"
             disabled={loading}
           >
             Draft
@@ -172,6 +178,40 @@ const EditBerita = ({ open, onClose, beritaId, onSuccess }) => {
         </div>
 
       </div>
+
+      {/* =========================== */}
+      {/* POP UP SUKSES */}
+      {/* =========================== */}
+      {showSuccess && (
+        <div className="fixed inset-0 bg-black/40 z-[60] flex items-center justify-center px-4">
+
+          <div className="bg-white w-full max-w-sm rounded-xl shadow-xl p-7 text-center">
+
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <img
+                src={DataImage.CentangIcon}
+                alt="success"
+                className="w-12 h-12"
+              />
+            </div>
+
+            <h3 className="text-xl font-semibold">Sukses</h3>
+            <p className="text-gray-600 mt-1">{successMessage}</p>
+
+            <button
+              onClick={() => {
+                setShowSuccess(false);
+                onSuccess();
+              }}
+              className="mt-5 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+            >
+              Oke
+            </button>
+
+          </div>
+
+        </div>
+      )}
 
     </div>
   );

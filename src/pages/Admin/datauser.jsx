@@ -140,6 +140,19 @@ export default function DataUser() {
     fetchProfile();
   }, []);
 
+  useEffect(() => {
+    if (openAdd || openEdit) {
+      document.body.style.overflow = "hidden";  // matikan scroll halaman
+    } else {
+      document.body.style.overflow = "auto";    // hidupkan scroll lagi
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [openAdd, openEdit]);
+
+
   // === FILTER USERS ===
   const filteredUsers = users.filter((user) => {
     const key = search.toLowerCase();
@@ -440,8 +453,7 @@ export default function DataUser() {
             const json = await res.json();
 
             if (!res.ok) {
-              alert(json.message || "Gagal menambah user");
-              return false;
+              return json.message || "Gagal menambah user"; // ⬅ error dikirim kembali
             }
 
             await fetchUsers();

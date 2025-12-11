@@ -2,6 +2,17 @@
 import { useState, useEffect } from "react";
 import { FiX } from "react-icons/fi";
 
+
+import {
+  validateUsername,
+  validateEmail,
+  validatePhone,
+  validatePassword,
+  validateRole,
+  combineErrors
+} from "../pages/validasi/validasi"; 
+
+
 export default function AddUserModal({ open, onClose, onSave }) {
   const [form, setForm] = useState({
     username: "",
@@ -12,6 +23,7 @@ export default function AddUserModal({ open, onClose, onSave }) {
   });
 
   const [step, setStep] = useState("form"); // "form" | "success"
+  const [errors, setErrors] = useState([]); // menampung error FE
 
   useEffect(() => {
     if (open) {
@@ -22,6 +34,7 @@ export default function AddUserModal({ open, onClose, onSave }) {
         role: "user",
         password: "",
       });
+      setErrors([]);
       setStep("form");
     }
   }, [open]);
@@ -36,26 +49,55 @@ export default function AddUserModal({ open, onClose, onSave }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const ok = await onSave(form); // harus return true
+    // 🔥 VALIDASI FE
+    const validationErrors = combineErrors(
+      validateUsername(form.username),
+      validateEmail(form.email),
+      validatePhone(form.phone),
+      validatePassword(form.password),
+      validateRole(form.role)
+    );
 
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return; // stop submit
+    }
+
+    // Kirim ke backend
+    const ok = await onSave(form);
     if (ok) {
       setStep("success");
+      setErrors([]);
     }
   };
 
   const handleCloseAll = () => {
     setStep("form");
+    setErrors([]);
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40">
+    <div
+      className="
+        fixed inset-0 z-[60] 
+        bg-black/40 
+        overflow-y-auto        /* ⬅️ SCROLL LUAR */
+        flex items-start justify-center
+        py-10                  /* ⬅️ Biar modal tidak nempel atas */
+      "
+    >
+      {/* CARD MODAL — tidak scroll */}
+      <div
+        className="
+          bg-white rounded-2xl shadow-xl
+          w-full max-w-2xl p-8 
+          relative
+        "
+      >
 
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl p-8 relative">
-
-        {/* Tombol Close */}
+        {/* Tombol X */}
         <button
-          type="button"
           onClick={handleCloseAll}
           className="absolute right-6 top-6 text-green-500 hover:text-green-600"
         >
@@ -66,46 +108,58 @@ export default function AddUserModal({ open, onClose, onSave }) {
           <>
             <h2 className="text-xl font-semibold mb-6">Tambah User</h2>
 
+            {/* ERROR VALIDASI */}
+            {errors.length > 0 && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-300 rounded-lg">
+                <ul className="text-red-600 text-sm list-disc ml-5">
+                  {errors.map((err, idx) => (
+                    <li key={idx}>{err}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* FORM */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              
+
               <div>
-                <label className="block text-sm font-medium mb-1">Nama User</label>
+                <label className="text-sm font-medium mb-1 block">Nama User</label>
                 <input
                   type="text"
                   name="username"
-                  placeholder="Masukkan nama user"
                   value={form.username}
                   onChange={handleChange}
+                  placeholder="Masukkan nama user"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
+                <label className="text-sm font-medium mb-1 block">Email</label>
                 <input
                   type="email"
                   name="email"
-                  placeholder="Masukkan email"
                   value={form.email}
                   onChange={handleChange}
+                  placeholder="Masukkan email"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Nomor Telepon</label>
+                <label className="text-sm font-medium mb-1 block">Nomor Telepon</label>
                 <input
                   type="text"
                   name="phone"
-                  placeholder="Masukkan nomor telepon"
                   value={form.phone}
                   onChange={handleChange}
+                  placeholder="Masukkan nomor telepon"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Role</label>
+                <label className="text-sm font-medium mb-1 block">Role</label>
                 <select
                   name="role"
                   value={form.role}
@@ -118,13 +172,13 @@ export default function AddUserModal({ open, onClose, onSave }) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Password</label>
+                <label className="text-sm font-medium mb-1 block">Password</label>
                 <input
                   type="password"
                   name="password"
-                  placeholder="Masukkan password user"
                   value={form.password}
                   onChange={handleChange}
+                  placeholder="Masukkan password"
                   className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                 />
               </div>
@@ -137,15 +191,16 @@ export default function AddUserModal({ open, onClose, onSave }) {
                   Simpan
                 </button>
               </div>
+
             </form>
           </>
         ) : (
-          // POPUP SUCCESS
+          // POPUP SUKSES
           <div className="flex flex-col items-center justify-center py-6">
-            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-500">
+            <div className="mb-4 flex items-center justify-center h-18 w-18 rounded-full bg-green-500">
               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-white"
+                className="h-14 w-14 text-white"
+                viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
@@ -157,12 +212,11 @@ export default function AddUserModal({ open, onClose, onSave }) {
             </div>
 
             <h3 className="text-lg font-semibold mb-1">Sukses</h3>
-            <p className="text-sm text-gray-600 mb-6">
+            <p className="text-sm text-gray-600 mb-10">
               User berhasil ditambahkan.
             </p>
 
             <button
-              type="button"
               onClick={handleCloseAll}
               className="px-6 py-2 rounded-full bg-green-500 hover:bg-green-600 text-white text-sm font-medium"
             >
@@ -170,6 +224,7 @@ export default function AddUserModal({ open, onClose, onSave }) {
             </button>
           </div>
         )}
+
       </div>
     </div>
   );
