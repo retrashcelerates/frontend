@@ -204,8 +204,8 @@ export default function DataUser() {
       formData.append("avatar", file);
 
       // ❗ SESUAIKAN ENDPOINT INI JUGA JIKA PERLU
-      const res = await fetch(`${API_BASE_URL}/auth/profile/avatar`, {
-        method: "POST",
+      const res = await fetch(`${API_BASE_URL}/users/${currentUser.id}`, {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },

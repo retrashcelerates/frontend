@@ -613,9 +613,6 @@ export default function FromSetor() {
                       <p className="text-sm font-semibold text-emerald-600">
                         {trx.amount}
                       </p>
-                      <button className="mt-1 text-xs text-red-400 hover:text-red-500">
-                        🗑
-                      </button>
                     </div>
                   </div>
                 ))}

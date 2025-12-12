@@ -151,8 +151,8 @@ const AdminLokasi = () => {
       // sesuaikan nama field dengan backend
       formData.append("avatar", file);
 
-      const res = await fetch(`${API_BASE_URL}/auth/profile/avatar`, {
-        method: "POST",
+      const res = await fetch(`${API_BASE_URL}/users/${currentUser.id}`, {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },

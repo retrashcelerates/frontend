@@ -149,8 +149,8 @@ export default function DaftarHarga() {
       const formData = new FormData();
       formData.append("avatar", file);
 
-      const res = await fetch(`${API_BASE_URL}/auth/profile/avatar`, {
-        method: "POST",
+      const res = await fetch(`${API_BASE_URL}/users/${currentUser.id}`, {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },
